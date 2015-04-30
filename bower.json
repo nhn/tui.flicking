@@ -1,0 +1,19 @@
+{
+  "name": "component-m-flick",
+  "version": "1.0.0",
+  "authors": [
+    "이제인<jein.yi@nhnent.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "code-snippet": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/code-snippet.git#1.0.1"
+  }
+}
