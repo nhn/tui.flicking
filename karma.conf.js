@@ -32,7 +32,15 @@ module.exports = function(config) {
          */
         files: [
             'lib/code-snippet/code-snippet.js',
+            'lib/jquery/jquery.js',
+            'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+            'lib/discriminator/src/js/MoveDetector.js',
+            'lib/move-helper/src/js/movehelper.js',
+            'lib/move-helper/src/js/*.js',
+            'test/**/*.html',
+            'test/**/*.css',
             'test/*.js',
+            'src/js/flicking.js',
             'src/**/*.js'
         ],
 
