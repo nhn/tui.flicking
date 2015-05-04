@@ -47,11 +47,12 @@ if (!ne.component) {
         /**
          * model use or not
          */
-        isStatic: true,
+        hasStatic: true,
         /**
          * initialize
          */
         init: function(option) {
+            // options
             this.element = option.element;
             this.movepanel = option.movepanel;
             this.itemTag = option.itemTag || this.itemTag;
@@ -59,15 +60,56 @@ if (!ne.component) {
             this.template = option.template || this.template;
             this.flow = option.flow || this.flow;
             this.useMagnetic = ne.util.isExisty(option.useMagnetic) ? option.useMagnetic : this.useMagnetic;
+            this.isCircular = ne.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
+            this.hasStatic = ne.util.isExisty(option.hasStatic) ? option.hasStatic : this.hasStatic;
+
+            // to figure position to move
             this.startPos = {};
             this.savePos = {};
-            this.direction = (this.flow === 'vertical') ? ['N','S'] : ['W','E'];
-            this.way = (this.flow === 'vertical') ? 'top' : 'left';
-            this.wide = (this.flow === 'vertical') ? 'height' : 'width';
-            this.width = (this.flow === 'vertical') ? this.element.clientHeight : this.element.clientWidth;
-            this.isCircular = ne.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
-            this.isStatic = ne.util.isExisty(option.isStatic) ? option.isStatic : this.isStatic;
 
+            // data is set by direction or flow
+            this._setConfig();
+
+            // if data isn't fixed,make elemen
+            if (!this.hasStatic) {
+                this._makeItems(option.list||['']);
+            }
+
+            // init helper for movehelper, movedetector
+            this._initHelpers();
+            this._initElements();
+            this._initWrap();
+            this._attachEvent();
+        },
+        /**
+         * set config
+         * @private
+         */
+        _setConfig: function() {
+            var isVertical = (this.flow === 'vertical');
+            if (isVertical) {
+                this._config = {
+                    direction: ['N','S'],
+                    way: 'top',
+                    dimension: 'height',
+                    point: 'y',
+                    width: this.element.clientHeight
+                };
+            } else {
+                this._config = {
+                    direction: ['W','E'],
+                    way: 'left',
+                    dimension: 'width',
+                    point: 'x',
+                    width: this.element.clientWidth
+                };
+            }
+        },
+        /**
+         * init method for helper objects
+         * @private
+         */
+        _initHelpers: function() {
             // Movehelper component
             this.mover = new ne.component.MoveHelper({
                 flow: this.flow,
@@ -79,24 +121,28 @@ if (!ne.component) {
             this.movedetect = new ne.component.MoveDetector({
                 flickRange: 50
             });
-
-            if (!this.isStatic) {
-                this.model = new ne.component.Flicking.Model(option);
-                this._makeItems(option.list||['']);
-                this.elementCount = option.list.length;
-            } else {
-                this.elementCount = this.movepanel.children.length;
-            }
-            this._initWrap();
-            this._attachEvent();
         },
         /**
          * initialize panels
          * @private
          */
         _initWrap: function() {
-            this.movepanel.style[this.way] = '0px';
-            this.movepanel.style[this.wide] = this.width * this.elementCount + 'px';
+            var config = this._config;
+            this.movepanel.style[config.way] = '0px';
+            this.movepanel.style[config.dimension] = config.width * this.elementCount + 'px';
+        },
+        /**
+         * item element width
+         * @private
+         */
+        _initElements: function() {
+            this.elementCount = 0;
+            ne.util.forEachArray(this.movepanel.children, function(element) {
+                if (element.nodeType === 1) {
+                    element.style.width = this._config.width + 'px';
+                    this.elementCount += 1;
+                }
+            }, this);
         },
         /**
          * add event handler
@@ -109,6 +155,7 @@ if (!ne.component) {
         },
         /**
          * touch start event handler
+         * @param {object} e touchstart event
          * @private
          */
         onTouchStart: function(e) {
@@ -118,13 +165,12 @@ if (!ne.component) {
 
             this.fire('beforeMove', this);
 
-            if (this.isStatic && this.isCircular) {
-                this._setClone();
-                this._setPrev();
-                this._setNext();
+            if (this.hasStatic && this.isCircular) {
+                this._parpareMoveElement();
             }
 
-            this.startPos[this.way] = parseInt(this.movepanel.style[this.way], 10);
+            // save touchstart data
+            this.startPos[this._config.way] = parseInt(this.movepanel.style[this._config.way], 10);
             this.savePos.x = this.startPos.x = e.touches[0].clientX;
             this.savePos.y = this.startPos.y = e.touches[0].clientY;
             this.startPos.time = (new Date()).getTime();
@@ -134,7 +180,7 @@ if (!ne.component) {
         },
         /**
          * toucn move event handle
-         * @param e
+         * @param {event} e touchmove event
          * @private
          */
         _onTouchMove: function(e) {
@@ -146,6 +192,7 @@ if (!ne.component) {
             e.preventDefault();
             this.savePos.x = e.touches[0].clientX;
             this.savePos.y = e.touches[0].clientY;
+
             if (this.flow === 'horizontal') {
                 start = pos.x;
                 end = this.savePos.x;
@@ -154,16 +201,64 @@ if (!ne.component) {
                 end = this.savePos.y;
             }
             movement = end - start;
-            this.movepanel.style[this.way] = pos[this.way] + movement + 'px';
+            this.movepanel.style[this._config.way] = pos[this._config.way] + movement + 'px';
+        },
+        /**
+         * touch end event hendle
+         * @private
+         */
+        _onTouchEnd: function() {
+            var point = this._config.point;
+            if (this.startPos[point] === this.savePos[point]) {
+                this._resetMoveElement();
+            } else if (this.useMagnetic) {
+                this._activeMagnetic();
+            }
+            document.removeEventListener('touchMove', this.onTouchMove);
+            document.removeEventListener('touchEnd', this.onTouchEnd);
+        },
+        /**
+         * prepare elements for moving
+         * @private
+         */
+        _parpareMoveElement: function() {
+            this._setClone();
+            this._setPrev();
+            this._setNext();
+        },
+        /**
+         * reset elements for moving
+         * @private
+         */
+        _resetMoveElement: function() {
+            var none = 'none';
+            if (!this.hasStatic) {
+                this._removePadding({ way: none });
+            } else {
+                this._removeClones({ way: none });
+            }
+        },
+        /**
+         * active magnetic to fix position movepanel and clones
+         * @private
+         */
+        _activeMagnetic: function() {
+            this._fixInto({
+                x: this.savePos.x,
+                y: this.savePos.y,
+                start: this.startPos.time,
+                end: (new Date()).getTime()
+            });
         },
         /**
          * set prev panel
          * @param {string} data
          */
         setPrev: function(data) {
+            var config = this._config;
             var element = this._getElement(data);
             this.expandMovePanel();
-            this.movepanel.style[this.way] = parseInt(this.movepanel.style[this.way], 10) - this.width + 'px';
+            this.movepanel.style[config.way] = parseInt(this.movepanel.style[config.way], 10) - config.width + 'px';
             this.movepanel.insertBefore(element, this.movepanel.firstChild);
         },
         /**
@@ -198,7 +293,8 @@ if (!ne.component) {
             var i = 1,
                 clones = this.clones,
                 count = clones.count,
-                width = this.width * count;
+                config = this._config,
+                width = config.width * count;
 
             if (!ne.util.isHTMLTag(this.movepanel.firstChild)) {
                 this.movepanel.removeChild(this.movepanel.firstChild);
@@ -207,8 +303,8 @@ if (!ne.component) {
             for (; i <= count; i++) {
                 this.movepanel.insertBefore(clones[count - i].cloneNode(true), this.movepanel.firstChild);
             }
-            this.movepanel.style[this.wide] = parseInt(this.movepanel.style[this.wide], 10) + width + 'px';
-            this.movepanel.style[this.way] = parseInt(this.movepanel.style[this.way], 10) - width + 'px';
+            this.movepanel.style[config.dimension] = this._getWide() + width + 'px';
+            this.movepanel.style[config.way] = parseInt(this.movepanel.style[config.way], 10) - width + 'px';
         },
         /**
          * set next element - static elements
@@ -217,41 +313,24 @@ if (!ne.component) {
         _setNext: function() {
             var clones = this.clones,
                 count = clones.count,
-                width = this.width * count,
+                width = this._config.width * count,
                 i = 0;
             for (; i < count; i++) {
                 this.movepanel.appendChild(clones[i].cloneNode(true));
             }
-            this.movepanel.style[this.wide] = parseInt(this.movepanel.style[this.wide], 10) + width + 'px';
+            this.movepanel.style[this._config.dimension] = this._getWide() + width + 'px';
         },
         /**
          * expand movepanel's width | height
          */
         expandMovePanel: function() {
-            this.movepanel.style[this.wide] = parseInt(this.movepanel.style[this.wide], 10) + this.width + 'px';
+            this.movepanel.style[this._config.dimension] = this._getWide() + this._config.width + 'px';
         },
         /**
          * reduce movepanel's width | height
          */
         reduceMovePanel: function() {
-            this.movepanel.style[this.wide] = parseInt(this.movepanel.style[this.wide], 10) - this.width + 'px';
-        },
-        /**
-         * touch end event hendle
-         * @param e
-         * @private
-         */
-        _onTouchEnd: function(e) {
-            if (this.useMagnetic) {
-                this._fixInto({
-                    x: this.savePos.x,
-                    y: this.savePos.y,
-                    start: this.startPos.time,
-                    end: (new Date()).getTime()
-                });
-            }
-            document.removeEventListener('touchMove', this.onTouchMove);
-            document.removeEventListener('touchEnd', this.onTouchEnd);
+            this.movepanel.style[this._config.dimension] = this._getWide() - this._config.width + 'px';
         },
         /**
          * set width resize event like orientation change
@@ -287,14 +366,15 @@ if (!ne.component) {
          */
         _fixInto: function(info) {
             var direction = this.movedetect.getDirection([this.savePos, this.startPos]),
-                way = (direction === this.direction[0]) ? 'back' : 'forward',
+                way = (direction === this._config.direction[0]) ? 'back' : 'forward',
                 isFlick = this._isFlick(info),
-                origin = this.startPos[this.way],
+                origin = this.startPos[this._config.way],
                 pos;
 
             if (!isFlick || this._isEdge(info)) {
                 way = (way === 'back') ? 'forward' : 'back';
                 pos = this._getReturnPos(way);
+                pos.recover = true;
             } else {
                 pos = this._getCoverPos(way, origin);
             }
@@ -308,7 +388,7 @@ if (!ne.component) {
          */
         _moveTo: function(pos, way) {
             pos.way = way;
-            var origin = this.startPos[this.way],
+            var origin = this.startPos[this._config.way],
                 moved = this._getMoved(),
                 start = origin + moved,
                 complete = pos.cover ? ne.util.bind(this._complete, this, pos, true) : ne.util.bind(this._complete, this, pos);
@@ -326,12 +406,14 @@ if (!ne.component) {
          */
         _complete: function(pos, customFire) {
             if (customFire) {
-                this.fire('afterFlick');
+                this.fire('afterFlick', pos);
+            } else {
+                this.fire('returnFlick', pos);
             }
             this.rock = false;
-            this.movepanel.style[this.way] = pos.dest + 'px';
+            this.movepanel.style[this._config.way] = pos.dest + 'px';
 
-            if (!this.isStatic) {
+            if (!this.hasStatic) {
                 this._removePadding(pos);
             } else {
                 if (this.isCircular) {
@@ -345,28 +427,41 @@ if (!ne.component) {
          */
         _removeClones: function(pos) {
             var removeCount = this.clones.count,
-                i = 0,
-                isNext = pos.way === 'forward',
-                leftCount = isNext ? removeCount + 1 : removeCount - 1,
-                rightCount = isNext ? removeCount - 1 : removeCount + 1;
+                totalCount = removeCount * 2,
+                leftCount = removeCount,
+                rightCount,
+                config = this._config,
+                way = pos.recover ? 'none' : pos.way;
 
-            for (; i < leftCount; i++) {
-                if(this.movepanel.firstChild.nodeType !== 1) {
-                    this.movepanel.removeChild(this.movepanel.firstChild);
+            if (way === 'forward') {
+                leftCount = removeCount + 1;
+            } else if (way === 'back') {
+                leftCount = removeCount - 1;
+            }
+            rightCount = totalCount - leftCount;
+
+            this._removeCloneElement(leftCount, 'firstChild');
+            this._removeCloneElement(rightCount, 'lastChild');
+            this.movepanel.style[config.dimension] = this._getWide() - config.width * totalCount + 'px';
+            this.movepanel.style[config.way] = 0;
+        },
+        /**
+         * remove clone elements
+         * @param {number} count clone element count
+         * @param {string} type key target node(firstChild|lastChild)
+         * @private
+         */
+        _removeCloneElement: function(count, type) {
+            var i = 0,
+                movepanel = this.movepanel;
+            for (; i < count; i++) {
+                if(movepanel[type].nodeType !== 1) {
+                    movepanel.removeChild(movepanel[type]);
                     i -= 1;
                     continue;
                 }
-                this.movepanel.removeChild(this.movepanel.firstChild);
+                movepanel.removeChild(movepanel[type]);
             }
-            for (i = 0; i < rightCount; i++) {
-                if(this.movepanel.lastChild.nodeType !== 1) {
-                    this.movepanel.removeChild(this.movepanel.lastChild);
-                    i -= 1;
-                    continue;
-                }
-                this.movepanel.removeChild(this.movepanel.lastChild);
-            }
-            this.movepanel.style[this.way] = 0;
         },
         /**
          * remove padding used for drag
@@ -375,18 +470,21 @@ if (!ne.component) {
          */
         _removePadding: function(pos) {
             var children = this.movepanel.getElementsByTagName(this.itemTag),
-                first = children[0],
-                second = children[1],
-                last = children[children.length -1];
+                pre = children[0],
+                forth = children[children.length -1],
+                config = this._config,
+                way = pos.recover ? 'none' : pos.way;
 
-            if (pos.way === 'forward') {
-                this.movepanel.removeChild(first);
-                this.movepanel.removeChild(second);
-            } else {
-                this.movepanel.removeChild(second);
-                this.movepanel.removeChild(last);
+            if (way === 'forward') {
+                forth = children[1];
+            } else if(way === 'back') {
+                pre = children[1];
             }
-            this.movepanel.style[this.way] = 0 + 'px';
+
+            this.movepanel.removeChild(pre);
+            this.movepanel.removeChild(forth);
+            this.movepanel.style[config.way] = 0 + 'px';
+            this.movepanel.style[config.dimension] = this._getWide() - (config.width * 2) + 'px';
         },
         /**
          * get return distance and destination
@@ -398,7 +496,7 @@ if (!ne.component) {
             var moved = this._getMoved();
 
             return {
-                dest: this.startPos[this.way],
+                dest: this.startPos[this._config.way],
                 dist : (way === 'forward') ? -moved : moved,
                 cover: false
             }
@@ -414,11 +512,11 @@ if (!ne.component) {
                 pos = { cover: true };
 
             if (way === 'forward') {
-                pos.dist = -this.width - moved;
-                pos.dest = origin - this.width;
+                pos.dist = -this._config.width - moved;
+                pos.dest = origin - this._config.width;
             } else {
-                pos.dist = -this.width + moved;
-                pos.dest = origin + this.width;
+                pos.dist = -this._config.width + moved;
+                pos.dest = origin + this._config.width;
             }
             return pos;
         },
@@ -443,18 +541,24 @@ if (!ne.component) {
             }
 
             var direction = this.movedetect.getDirection([this.savePos, this.startPos]),
-                isNext = (direction === this.direction[0]) ? false : true,
-                current = parseInt(this.movepanel.style[this.way], 10),
-                width = parseInt(this.movepanel.style[this.wide], 10);
+                isNext = (direction === this._config.direction[0]) ? false : true,
+                current = parseInt(this.movepanel.style[this._config.way], 10),
+                width = this._getWide();
 
-            if (isNext && current <= -width + this.width) {
+            if (isNext && (current <= -width + this._config.width)) {
                 return true;
-            } else if(!isNext && current > 0) {
+            }
+            if(!isNext && current > 0) {
                 return true;
             }
 
             return false;
         },
+        /**
+         * not static case, make element by data
+         * @param data
+         * @private
+         */
         _makeItems: function(data) {
             var i = 0,
                 len = data.length,
@@ -474,7 +578,16 @@ if (!ne.component) {
             var item = document.createElement(this.itemTag);
             item.className = this.itemClass;
             item.innerHTML = data;
+            item.style[this._config.dimension] = this._config.width + 'px';
             return item;
+        },
+        /**
+         * movepanel's width or height
+         * @returns {*}
+         * @private
+         */
+        _getWide: function() {
+            return parseInt(this.movepanel.style[this._config.dimension], 10);
         }
     });
     ne.util.CustomEvents.mixin(exports.Flicking);
