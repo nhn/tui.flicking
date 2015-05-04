@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <title></title>
+    <script type="text/javascript" src="../lib/code-snippet/code-snippet.js"></script>
+    <script type="text/javascript" src="../lib/discriminator/src/js/MoveDetector.js"></script>
+    <script type="text/javascript" src="../lib/move-helper/src/js/movehelper.js"></script>
+    <script type="text/javascript" src="../lib/move-helper/src/js/effect.js"></script>
+    <script type="text/javascript" src="../src/js/flicking.js"></script>
+    <script type="text/javascript" src="../src/js/flicking.model.js"></script>
+    <style>
+        .item {float:left;width:300px; }
+    </style>
+</head>
+<body>
+<div id="flick" class="flick" style="position:relative; width:300px;height:300px;background-color:#aaa;overflow:hidden">
+    <div id="flick-wrap1" class="panelwrap" style="background-color:#cd0342;position: absolute;height:300px; width:1800px;">
+        <div class="item">item1</div>
+        <div class="item">item2</div>
+        <div class="item">item3</div>
+        <div class="item">item4</div>
+        <div class="item">item5</div>
+        <div class="item">item6</div>
+    </div>
+</div>
+<script type="text/javascript">
+    new ne.component.Flicking({
+        element: document.getElementById('flick'),
+        movepanel: document.getElementById('flick-wrap1'),
+        flow: 'horizontal',
+        isCircular: true,
+        isStatic: true
+    });
+</script>
+</body>
+</html>
