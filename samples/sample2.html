@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
     <title></title>
-    <script type="text/javascript" src="../lib/code-snippet/code-snippet.js"></script>
-    <script type="text/javascript" src="../lib/discriminator/src/js/MoveDetector.js"></script>
-    <script type="text/javascript" src="../lib/move-helper/src/js/movehelper.js"></script>
-    <script type="text/javascript" src="../lib/move-helper/src/js/effect.js"></script>
-    <script type="text/javascript" src="../src/js/flicking.js"></script>
-    <script type="text/javascript" src="../src/js/flicking.model.js"></script>
+    <script type="text/javascript" src="lib/code-snippet.js"></script>
+    <script type="text/javascript" src="lib/MoveDetector.js"></script>
+    <script type="text/javascript" src="lib/movehelper.js"></script>
+    <script type="text/javascript" src="lib/effect.js"></script>
+    <script type="text/javascript" src="js/flicking.js"></script>
     <style>
         .item {float:left; height:100%;font-size:2.0em;}
     </style>
@@ -19,15 +18,11 @@
     <div id="flick-wrap1" class="panelwrap" style="background-color:#cd0342;position: absolute;height:300px;">
     </div>
 </div>
-<!--<div id="flick" class="flick" style="position:relative; width:300px;height:300px;background-color:#aaa;overflow:hidden">-->
-    <!--<div id="flick-wrap1" class="panelwrap" style="background-color:#cd0342;position: absolute;height:300px;">-->
-    <!--</div>-->
-<!--</div>-->
 <div id="move"></div>
 <script type="text/javascript">
     var flick = new ne.component.Flicking({
         element: document.getElementById('flick'),
-    movepanel: document.getElementById('flick-wrap1'),
+        movepanel: document.getElementById('flick-wrap1'),
         flow: 'horizontal',
         useMagnetic: true,
         isCircular: true,
@@ -61,7 +56,7 @@
         }
         console.log(leftcount, rightcount)
         document.getElementById('move').innerHTML = 'after Flicking';
-    })
+    });
     flick.on('returnFlick', function(data) {
         leftcount -= 1;
         rightcount -= 1;
