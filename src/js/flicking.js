@@ -347,7 +347,7 @@ if (!ne.component) {
             for (; i <= count; i++) {
                 this.movepanel.insertBefore(clones[count - i].cloneNode(true), this.movepanel.firstChild);
             }
-            this.movepanel.style[config.dimension] = this._getWide() + width + 'px';
+            this.movepanel.style[config.dimension] = this._getWidth() + width + 'px';
             this.movepanel.style[config.way] = parseInt(this.movepanel.style[config.way], 10) - width + 'px';
         },
         /**
@@ -362,19 +362,19 @@ if (!ne.component) {
             for (; i < count; i++) {
                 this.movepanel.appendChild(clones[i].cloneNode(true));
             }
-            this.movepanel.style[this._config.dimension] = this._getWide() + width + 'px';
+            this.movepanel.style[this._config.dimension] = this._getWidth() + width + 'px';
         },
         /**
          * expand movepanel's width | height
          */
         expandMovePanel: function() {
-            this.movepanel.style[this._config.dimension] = this._getWide() + this._config.width + 'px';
+            this.movepanel.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
         },
         /**
          * reduce movepanel's width | height
          */
         reduceMovePanel: function() {
-            this.movepanel.style[this._config.dimension] = this._getWide() - this._config.width + 'px';
+            this.movepanel.style[this._config.dimension] = this._getWidth() - this._config.width + 'px';
         },
 
         /*************
@@ -404,14 +404,13 @@ if (!ne.component) {
          * @private
          */
         _fixInto: function(info) {
-            var direction = this.movedetect.getDirection([this.savePos, this.startPos]),
-                way = (direction === this._config.direction[0]) ? 'back' : 'forward',
+            var way = this._isBackward() ? 'backward' : 'forward',
                 isFlick = this._isFlick(info),
                 origin = this.startPos[this._config.way],
                 pos;
 
             if (!isFlick || this._isEdge(info)) {
-                way = (way === 'back') ? 'forward' : 'back';
+                way = (way === 'backward') ? 'forward' : 'backward';
                 pos = this._getReturnPos(way);
                 pos.recover = true;
             } else {
@@ -479,14 +478,14 @@ if (!ne.component) {
 
             if (way === 'forward') {
                 leftCount = removeCount + 1;
-            } else if (way === 'back') {
+            } else if (way === 'backward') {
                 leftCount = removeCount - 1;
             }
             rightCount = totalCount - leftCount;
 
             this._removeCloneElement(leftCount, 'firstChild');
             this._removeCloneElement(rightCount, 'lastChild');
-            this.movepanel.style[config.dimension] = this._getWide() - config.width * totalCount + 'px';
+            this.movepanel.style[config.dimension] = this._getWidth() - config.width * totalCount + 'px';
             this.movepanel.style[config.way] = 0;
         },
         /**
@@ -521,14 +520,14 @@ if (!ne.component) {
 
             if (way === 'forward') {
                 forth = children[1];
-            } else if(way === 'back') {
+            } else if(way === 'backward') {
                 pre = children[1];
             }
 
             this.movepanel.removeChild(pre);
             this.movepanel.removeChild(forth);
             this.movepanel.style[config.way] = 0 + 'px';
-            this.movepanel.style[config.dimension] = this._getWide() - (config.width * 2) + 'px';
+            this.movepanel.style[config.dimension] = this._getWidth() - (config.width * 2) + 'px';
         },
 
         /*************
@@ -589,10 +588,9 @@ if (!ne.component) {
                 return false;
             }
 
-            var direction = this.movedetect.getDirection([this.savePos, this.startPos]),
-                isNext = (direction === this._config.direction[0]) ? false : true,
+            var isNext = this._isBackward() ? false : true,
                 current = parseInt(this.movepanel.style[this._config.way], 10),
-                width = this._getWide();
+                width = this._getWidth();
 
             if (isNext && (current <= -width + this._config.width)) {
                 return true;
@@ -603,8 +601,22 @@ if (!ne.component) {
 
             return false;
         },
-        _getWide: function() {
+        /**
+         * get width movepanels
+         * @returns {Number}
+         * @private
+         */
+        _getWidth: function() {
             return parseInt(this.movepanel.style[this._config.dimension], 10);
+        },
+        /**
+         * get whether is back or forward
+         * @returns {boolean}
+         * @private
+         */
+        _isBackward: function() {
+            var direction = this.movedetect.getDirection([this.savePos, this.startPos]);
+            return direction === this._config.direction[0];
         }
     });
     ne.util.CustomEvents.mixin(exports.Flicking);
