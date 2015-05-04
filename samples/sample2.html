@@ -19,6 +19,7 @@
     <div id="flick-wrap1" class="panelwrap" style="background-color:#cd0342;position: absolute;height:300px;">
     </div>
 </div>
+<div id="move"></div>
 <script type="text/javascript">
     var flick = new ne.component.Flicking({
         element: document.getElementById('flick'),
@@ -46,8 +47,10 @@
 
         flick.setPrev(left);
         flick.setNext(right);
+        document.getElementById('move').innerHTML = 'beforeMove';
     });
     flick.on('afterFlick', function() {
+        document.getElementById('move').innerHTML = 'after Flicking';
     });
 </script>
 </body>

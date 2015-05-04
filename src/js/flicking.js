@@ -143,6 +143,7 @@ if (!ne.component) {
                 start,
                 end;
 
+            e.preventDefault();
             this.savePos.x = e.touches[0].clientX;
             this.savePos.y = e.touches[0].clientY;
             if (this.flow === 'horizontal') {
