@@ -209,7 +209,7 @@ if (!ne.component) {
             }
 
             // save touchstart data
-            this.startPos[this._config.way] = parseInt(this.movepanel.style[this._config.way], 10);
+            this.startPos[this._config.way] = this._getElementPos();
             this.savePos.x = this.startPos.x = e.touches[0].clientX;
             this.savePos.y = this.startPos.y = e.touches[0].clientY;
             this.startPos.time = (new Date()).getTime();
@@ -239,6 +239,7 @@ if (!ne.component) {
                 start = pos.y;
                 end = this.savePos.y;
             }
+
             movement = end - start;
             this.movepanel.style[this._config.way] = pos[this._config.way] + movement + 'px';
         },
@@ -253,6 +254,7 @@ if (!ne.component) {
             } else if (this.useMagnetic) {
                 this._activeMagnetic();
             }
+
             document.removeEventListener('touchMove', this.onTouchMove);
             document.removeEventListener('touchEnd', this.onTouchEnd);
         },
@@ -321,7 +323,7 @@ if (!ne.component) {
         _setClone: function() {
             var count = 0;
             this.clones = ne.util.filter(this.movepanel.children, function(element) {
-                if(element.nodeType === 1) {
+                if (element.nodeType === 1) {
                     count += 1;
                     return true;
                 }
@@ -338,17 +340,19 @@ if (!ne.component) {
                 clones = this.clones,
                 count = clones.count,
                 config = this._config,
-                width = config.width * count;
+                width = config.width * count,
+                movepanel = this.movepanel;
 
-            if (!ne.util.isHTMLTag(this.movepanel.firstChild)) {
-                this.movepanel.removeChild(this.movepanel.firstChild);
+            if (!ne.util.isHTMLTag(movepanel.firstChild)) {
+                this.movepanel.removeChild(movepanel.firstChild);
             }
 
             for (; i <= count; i++) {
-                this.movepanel.insertBefore(clones[count - i].cloneNode(true), this.movepanel.firstChild);
+                movepanel.insertBefore(clones[count - i].cloneNode(true), movepanel.firstChild);
             }
-            this.movepanel.style[config.dimension] = this._getWidth() + width + 'px';
-            this.movepanel.style[config.way] = parseInt(this.movepanel.style[config.way], 10) - width + 'px';
+
+            movepanel.style[config.dimension] = this._getWidth() + width + 'px';
+            movepanel.style[config.way] = parseInt(movepanel.style[config.way], 10) - width + 'px';
         },
         /**
          * set next element - static elements
@@ -357,12 +361,15 @@ if (!ne.component) {
         _setNext: function() {
             var clones = this.clones,
                 count = clones.count,
-                width = this._config.width * count,
+                config = this._config,
+                width = config.width * count,
+                movepanel = this.movepanel,
                 i = 0;
             for (; i < count; i++) {
-                this.movepanel.appendChild(clones[i].cloneNode(true));
+                movepanel.appendChild(clones[i].cloneNode(true));
             }
-            this.movepanel.style[this._config.dimension] = this._getWidth() + width + 'px';
+
+            movepanel.style[config.dimension] = this._getWidth() + width + 'px';
         },
         /**
          * expand movepanel's width | height
@@ -416,6 +423,7 @@ if (!ne.component) {
             } else {
                 pos = this._getCoverPos(way, origin);
             }
+
             this._moveTo(pos, way);
         },
         /**
@@ -430,7 +438,6 @@ if (!ne.component) {
                 moved = this._getMoved(),
                 start = origin + moved,
                 complete = pos.cover ? ne.util.bind(this._complete, this, pos, true) : ne.util.bind(this._complete, this, pos);
-
             this.mover.setDistance(pos.dist);
             this.mover.action({
                 direction: way,
@@ -453,6 +460,7 @@ if (!ne.component) {
             } else {
                 this.fire('returnFlick', pos);
             }
+
             this.rock = false;
             this.movepanel.style[this._config.way] = pos.dest + 'px';
 
@@ -498,7 +506,7 @@ if (!ne.component) {
             var i = 0,
                 movepanel = this.movepanel;
             for (; i < count; i++) {
-                if(movepanel[type].nodeType !== 1) {
+                if (movepanel[type].nodeType !== 1) {
                     movepanel.removeChild(movepanel[type]);
                     i -= 1;
                     continue;
@@ -516,18 +524,19 @@ if (!ne.component) {
                 pre = children[0],
                 forth = children[children.length -1],
                 config = this._config,
-                way = pos.recover ? 'none' : pos.way;
+                way = pos.recover ? 'none' : pos.way,
+                movepanel = this.movepanel;
 
             if (way === 'forward') {
                 forth = children[1];
-            } else if(way === 'backward') {
+            } else if (way === 'backward') {
                 pre = children[1];
             }
 
-            this.movepanel.removeChild(pre);
-            this.movepanel.removeChild(forth);
-            this.movepanel.style[config.way] = 0 + 'px';
-            this.movepanel.style[config.dimension] = this._getWidth() - (config.width * 2) + 'px';
+            movepanel.removeChild(pre);
+            movepanel.removeChild(forth);
+            movepanel.style[config.way] = 0 + 'px';
+            movepanel.style[config.dimension] = this._getWidth() - (config.width * 2) + 'px';
         },
 
         /*************
@@ -589,13 +598,14 @@ if (!ne.component) {
             }
 
             var isNext = this._isBackward() ? false : true,
-                current = parseInt(this.movepanel.style[this._config.way], 10),
+                current = this._getElementPos(),
                 width = this._getWidth();
 
             if (isNext && (current <= -width + this._config.width)) {
                 return true;
             }
-            if(!isNext && current > 0) {
+
+            if (!isNext && current > 0) {
                 return true;
             }
 
@@ -608,6 +618,9 @@ if (!ne.component) {
          */
         _getWidth: function() {
             return parseInt(this.movepanel.style[this._config.dimension], 10);
+        },
+        _getElementPos: function() {
+            return parseInt(this.movepanel.style[this._config.way], 10);
         },
         /**
          * get whether is back or forward
