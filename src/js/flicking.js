@@ -74,7 +74,7 @@ if (!ne.component) {
 
             // if data isn't fixed,make elemen
             if (!this.hasStatic) {
-                this._makeItems(option.list||['']);
+                this._makeItems(option.data || '');
             }
 
             // init helper for movehelper, movedetector
@@ -161,13 +161,8 @@ if (!ne.component) {
          * @private
          */
         _makeItems: function(data) {
-            var i = 0,
-                len = data.length,
-                item;
-            for (; i < len; i++) {
-                item = this._getElement(data[i]);
-                this.movepanel.appendChild(item);
-            }
+            var item = this._getElement(data);
+            this.movepanel.appendChild(item);
         },
         /**
          * make element and return
