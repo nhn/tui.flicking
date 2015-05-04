@@ -48,9 +48,11 @@ if (!ne.component) {
          * model use or not
          */
         hasStatic: true,
-        /**
-         * initialize
-         */
+
+        /*************
+         * initialize methods
+         *************/
+
         init: function(option) {
             // options
             this.element = option.element;
@@ -154,6 +156,43 @@ if (!ne.component) {
             this.element.addEventListener('touchstart', ne.util.bind(this.onTouchStart, this));
         },
         /**
+         * not static case, make element by data
+         * @param data
+         * @private
+         */
+        _makeItems: function(data) {
+            var i = 0,
+                len = data.length,
+                item;
+            for (; i < len; i++) {
+                item = this._getElement(data[i]);
+                this.movepanel.appendChild(item);
+            }
+        },
+        /**
+         * make element and return
+         * @param data
+         * @returns {Element}
+         * @private
+         */
+        _getElement: function(data) {
+            var item = document.createElement(this.itemTag);
+            item.className = this.itemClass;
+            item.innerHTML = data;
+            item.style[this._config.dimension] = this._config.width + 'px';
+            return item;
+        },
+        /**
+         * movepanel's width or height
+         * @returns {*}
+         * @private
+         */
+
+        /*************
+         * event handle methods
+         *************/
+
+        /**
          * touch start event handler
          * @param {object} e touchstart event
          * @private
@@ -217,6 +256,11 @@ if (!ne.component) {
             document.removeEventListener('touchMove', this.onTouchMove);
             document.removeEventListener('touchEnd', this.onTouchEnd);
         },
+
+        /*************
+         * methods to edit move elements
+         *************/
+
         /**
          * prepare elements for moving
          * @private
@@ -332,16 +376,11 @@ if (!ne.component) {
         reduceMovePanel: function() {
             this.movepanel.style[this._config.dimension] = this._getWide() - this._config.width + 'px';
         },
-        /**
-         * set width resize event like orientation change
-         * @param {(number|string)}width
-         */
-        setWidth: function(width) {
-            if (!width) {
-                return;
-            }
-            this.element.style.width = (width + 'px');
-        },
+
+        /*************
+         * flicking methods
+         *************/
+
         /**
          * check flicking
          * @param info
@@ -400,6 +439,11 @@ if (!ne.component) {
                 complete: complete
             });
         },
+
+        /*************
+         * forth methods after effect end
+         *************/
+
         /**
          * after move comteom Event fire
          * @private
@@ -486,6 +530,11 @@ if (!ne.component) {
             this.movepanel.style[config.way] = 0 + 'px';
             this.movepanel.style[config.dimension] = this._getWide() - (config.width * 2) + 'px';
         },
+
+        /*************
+         * utils for figure pos to move
+         *************/
+
         /**
          * get return distance and destination
          * @param way
@@ -532,7 +581,7 @@ if (!ne.component) {
             return moved;
         },
         /**
-         * edge check but roop
+         * edge check but circular
          * @private
          */
         _isEdge: function() {
@@ -554,38 +603,6 @@ if (!ne.component) {
 
             return false;
         },
-        /**
-         * not static case, make element by data
-         * @param data
-         * @private
-         */
-        _makeItems: function(data) {
-            var i = 0,
-                len = data.length,
-                item;
-            for (; i < len; i++) {
-                item = this._getElement(data[i]);
-                this.movepanel.appendChild(item);
-            }
-        },
-        /**
-         * make element and return
-         * @param data
-         * @returns {Element}
-         * @private
-         */
-        _getElement: function(data) {
-            var item = document.createElement(this.itemTag);
-            item.className = this.itemClass;
-            item.innerHTML = data;
-            item.style[this._config.dimension] = this._config.width + 'px';
-            return item;
-        },
-        /**
-         * movepanel's width or height
-         * @returns {*}
-         * @private
-         */
         _getWide: function() {
             return parseInt(this.movepanel.style[this._config.dimension], 10);
         }
