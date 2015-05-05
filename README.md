@@ -12,7 +12,6 @@ Flicking
 
 ## Sample Image
 
-
 ## Documentation
 * code-snippet :  http://github.nhnent.com/fe/code-snippet
 * move-helper : http://github.nhnent.com/fe/component-move-helper
