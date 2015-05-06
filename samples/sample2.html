@@ -20,13 +20,13 @@
 </div>
 <div id="move"></div>
 <script type="text/javascript">
-    var flick = new ne.component.Flicking({
+    var flick = new ne.component.m.Flicking({
         element: document.getElementById('flick'),
-        movepanel: document.getElementById('flick-wrap1'),
+        wrapper: document.getElementById('flick-wrap1'),
         flow: 'horizontal',
-        useMagnetic: true,
+        isMagnetic: true,
         isCircular: true,
-        hasStatic: false,
+        isFixedHTML: false,
         itemClass: 'item',
         data: '<strong style="color:white;display:block;text-align:center;margin-top:100px">item</strong>',
         select: 1

@@ -13,15 +13,15 @@ if (!ne.component) {
 
 (function(exports) {
     /**
-     * @namespace ne.component.Flicking
+     * @namespace ne.component.m.Flicking
      * @example
-     *  var flick = new ne.component.Flicking({
+     *  var flick = new ne.component.m.Flicking({
      *      element: document.getElementById('flick'),
-     *      movepanel: document.getElementById('flick-wrap1'),
+     *      wrapper: document.getElementById('flick-wrap1'),
      *      flow: 'horizontal',
-     *      useMagnetic: true,
+     *      isMagnetic: true,
      *      isCircular: true,
-     *      hasStatic: false,
+     *      isFixedHTML: false,
      *      itemClass: 'item',
      *      data: '<strong>item</strong>',
      *      select: 1
@@ -29,12 +29,12 @@ if (!ne.component) {
      *
      *
      */
-    exports.Flicking = ne.util.defineClass(/** @lends ne.component.Flicking.prototype */{
+    exports.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
         /**
          * whether magnetic use(Defalut true)
          * @type boolean
          */
-        useMagnetic: true,
+        isMagnetic: true,
         /**
          * not static case, used template
          */
@@ -58,7 +58,7 @@ if (!ne.component) {
         /**
          * model use or not
          */
-        hasStatic: true,
+        isFixedHTML: true,
 
         /*************
          * initialize methods
@@ -67,14 +67,14 @@ if (!ne.component) {
         init: function(option) {
             // options
             this.element = option.element;
-            this.movepanel = option.movepanel;
+            this.wrapper = option.wrapper;
             this.itemTag = option.itemTag || this.itemTag;
             this.itemClass = option.itemClass || this.itemClass;
             this.template = option.template || this.template;
             this.flow = option.flow || this.flow;
-            this.useMagnetic = ne.util.isExisty(option.useMagnetic) ? option.useMagnetic : this.useMagnetic;
+            this.isMagnetic = ne.util.isExisty(option.isMagnetic) ? option.isMagnetic : this.isMagnetic;
             this.isCircular = ne.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
-            this.hasStatic = ne.util.isExisty(option.hasStatic) ? option.hasStatic : this.hasStatic;
+            this.isFixedHTML = ne.util.isExisty(option.isFixedHTML) ? option.isFixedHTML : this.isFixedHTML;
 
             // to figure position to move
             this.startPos = {};
@@ -84,7 +84,7 @@ if (!ne.component) {
             this._setConfig();
 
             // if data isn't fixed,make elemen
-            if (!this.hasStatic) {
+            if (!this.isFixedHTML) {
                 this._makeItems(option.data || '');
             }
 
@@ -126,7 +126,7 @@ if (!ne.component) {
             // Movehelper component
             this.mover = new ne.component.MoveHelper({
                 flow: this.flow,
-                element: this.movepanel,
+                element: this.wrapper,
                 effect: 'linear',
                 duration: 100
             });
@@ -141,8 +141,8 @@ if (!ne.component) {
          */
         _initWrap: function() {
             var config = this._config;
-            this.movepanel.style[config.way] = '0px';
-            this.movepanel.style[config.dimension] = config.width * this.elementCount + 'px';
+            this.wrapper.style[config.way] = '0px';
+            this.wrapper.style[config.dimension] = config.width * this.elementCount + 'px';
         },
         /**
          * item element width
@@ -150,7 +150,7 @@ if (!ne.component) {
          */
         _initElements: function() {
             this.elementCount = 0;
-            ne.util.forEachArray(this.movepanel.children, function(element) {
+            ne.util.forEachArray(this.wrapper.children, function(element) {
                 if (element.nodeType === 1) {
                     element.style.width = this._config.width + 'px';
                     this.elementCount += 1;
@@ -173,7 +173,7 @@ if (!ne.component) {
          */
         _makeItems: function(data) {
             var item = this._getElement(data);
-            this.movepanel.appendChild(item);
+            this.wrapper.appendChild(item);
         },
         /**
          * make element and return
@@ -189,7 +189,7 @@ if (!ne.component) {
             return item;
         },
         /**
-         * movepanel's width or height
+         * wrapper's width or height
          * @returns {*}
          * @private
          */
@@ -204,14 +204,14 @@ if (!ne.component) {
          * @private
          */
         onTouchStart: function(e) {
-            if (self.rock) {
+            if (self.lock) {
                 return;
             }
 
             this.fire('beforeMove', this);
 
-            if (this.hasStatic && this.isCircular) {
-                this._parpareMoveElement();
+            if (this.isFixedHTML && this.isCircular) {
+                this._prepareMoveElement();
             }
 
             // save touchstart data
@@ -247,7 +247,7 @@ if (!ne.component) {
             }
 
             movement = end - start;
-            this.movepanel.style[this._config.way] = pos[this._config.way] + movement + 'px';
+            this.wrapper.style[this._config.way] = pos[this._config.way] + movement + 'px';
         },
         /**
          * touch end event hendle
@@ -257,7 +257,7 @@ if (!ne.component) {
             var point = this._config.point;
             if (this.startPos[point] === this.savePos[point]) {
                 this._resetMoveElement();
-            } else if (this.useMagnetic) {
+            } else if (this.isMagnetic) {
                 this._activeMagnetic();
             }
 
@@ -273,7 +273,7 @@ if (!ne.component) {
          * prepare elements for moving
          * @private
          */
-        _parpareMoveElement: function() {
+        _prepareMoveElement: function() {
             this._setClone();
             this._setPrev();
             this._setNext();
@@ -284,14 +284,14 @@ if (!ne.component) {
          */
         _resetMoveElement: function() {
             var none = 'none';
-            if (!this.hasStatic) {
+            if (!this.isFixedHTML) {
                 this._removePadding({ way: none });
             } else {
                 this._removeClones({ way: none });
             }
         },
         /**
-         * active magnetic to fix position movepanel and clones
+         * active magnetic to fix position wrapper and clones
          * @private
          */
         _activeMagnetic: function() {
@@ -310,8 +310,8 @@ if (!ne.component) {
             var config = this._config;
             var element = this._getElement(data);
             this.expandMovePanel();
-            this.movepanel.style[config.way] = parseInt(this.movepanel.style[config.way], 10) - config.width + 'px';
-            this.movepanel.insertBefore(element, this.movepanel.firstChild);
+            this.wrapper.style[config.way] = parseInt(this.wrapper.style[config.way], 10) - config.width + 'px';
+            this.wrapper.insertBefore(element, this.wrapper.firstChild);
         },
         /**
          * set next panel
@@ -320,7 +320,7 @@ if (!ne.component) {
         setNext: function(data) {
             var element = this._getElement(data);
             this.expandMovePanel();
-            this.movepanel.appendChild(element);
+            this.wrapper.appendChild(element);
         },
         /**
          * save clone elements
@@ -328,7 +328,7 @@ if (!ne.component) {
          */
         _setClone: function() {
             var count = 0;
-            this.clones = ne.util.filter(this.movepanel.children, function(element) {
+            this.clones = ne.util.filter(this.wrapper.children, function(element) {
                 if (element.nodeType === 1) {
                     count += 1;
                     return true;
@@ -347,18 +347,18 @@ if (!ne.component) {
                 count = clones.count,
                 config = this._config,
                 width = config.width * count,
-                movepanel = this.movepanel;
+                wrapper = this.wrapper;
 
-            if (!ne.util.isHTMLTag(movepanel.firstChild)) {
-                this.movepanel.removeChild(movepanel.firstChild);
+            if (!ne.util.isHTMLTag(wrapper.firstChild)) {
+                this.wrapper.removeChild(wrapper.firstChild);
             }
 
             for (; i <= count; i++) {
-                movepanel.insertBefore(clones[count - i].cloneNode(true), movepanel.firstChild);
+                wrapper.insertBefore(clones[count - i].cloneNode(true), wrapper.firstChild);
             }
 
-            movepanel.style[config.dimension] = this._getWidth() + width + 'px';
-            movepanel.style[config.way] = parseInt(movepanel.style[config.way], 10) - width + 'px';
+            wrapper.style[config.dimension] = this._getWidth() + width + 'px';
+            wrapper.style[config.way] = parseInt(wrapper.style[config.way], 10) - width + 'px';
         },
         /**
          * set next element - static elements
@@ -369,25 +369,25 @@ if (!ne.component) {
                 count = clones.count,
                 config = this._config,
                 width = config.width * count,
-                movepanel = this.movepanel,
+                wrapper = this.wrapper,
                 i = 0;
             for (; i < count; i++) {
-                movepanel.appendChild(clones[i].cloneNode(true));
+                wrapper.appendChild(clones[i].cloneNode(true));
             }
 
-            movepanel.style[config.dimension] = this._getWidth() + width + 'px';
+            wrapper.style[config.dimension] = this._getWidth() + width + 'px';
         },
         /**
-         * expand movepanel's width | height
+         * expand wrapper's width | height
          */
         expandMovePanel: function() {
-            this.movepanel.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
+            this.wrapper.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
         },
         /**
-         * reduce movepanel's width | height
+         * reduce wrapper's width | height
          */
         reduceMovePanel: function() {
-            this.movepanel.style[this._config.dimension] = this._getWidth() - this._config.width + 'px';
+            this.wrapper.style[this._config.dimension] = this._getWidth() - this._config.width + 'px';
         },
 
         /*************
@@ -467,10 +467,10 @@ if (!ne.component) {
                 this.fire('returnFlick', pos);
             }
 
-            this.rock = false;
-            this.movepanel.style[this._config.way] = pos.dest + 'px';
+            this.lock = false;
+            this.wrapper.style[this._config.way] = pos.dest + 'px';
 
-            if (!this.hasStatic) {
+            if (!this.isFixedHTML) {
                 this._removePadding(pos);
             } else {
                 if (this.isCircular) {
@@ -499,8 +499,8 @@ if (!ne.component) {
 
             this._removeCloneElement(leftCount, 'firstChild');
             this._removeCloneElement(rightCount, 'lastChild');
-            this.movepanel.style[config.dimension] = this._getWidth() - config.width * totalCount + 'px';
-            this.movepanel.style[config.way] = 0;
+            this.wrapper.style[config.dimension] = this._getWidth() - config.width * totalCount + 'px';
+            this.wrapper.style[config.way] = 0;
         },
         /**
          * remove clone elements
@@ -510,14 +510,14 @@ if (!ne.component) {
          */
         _removeCloneElement: function(count, type) {
             var i = 0,
-                movepanel = this.movepanel;
+                wrapper = this.wrapper;
             for (; i < count; i++) {
-                if (movepanel[type].nodeType !== 1) {
-                    movepanel.removeChild(movepanel[type]);
+                if (wrapper[type].nodeType !== 1) {
+                    wrapper.removeChild(wrapper[type]);
                     i -= 1;
                     continue;
                 }
-                movepanel.removeChild(movepanel[type]);
+                wrapper.removeChild(wrapper[type]);
             }
         },
         /**
@@ -526,12 +526,12 @@ if (!ne.component) {
          * @private
          */
         _removePadding: function(pos) {
-            var children = this.movepanel.getElementsByTagName(this.itemTag),
+            var children = this.wrapper.getElementsByTagName(this.itemTag),
                 pre = children[0],
                 forth = children[children.length -1],
                 config = this._config,
                 way = pos.recover ? 'none' : pos.way,
-                movepanel = this.movepanel;
+                wrapper = this.wrapper;
 
             if (way === 'forward') {
                 forth = children[1];
@@ -539,10 +539,10 @@ if (!ne.component) {
                 pre = children[1];
             }
 
-            movepanel.removeChild(pre);
-            movepanel.removeChild(forth);
-            movepanel.style[config.way] = 0 + 'px';
-            movepanel.style[config.dimension] = this._getWidth() - (config.width * 2) + 'px';
+            wrapper.removeChild(pre);
+            wrapper.removeChild(forth);
+            wrapper.style[config.way] = 0 + 'px';
+            wrapper.style[config.dimension] = this._getWidth() - (config.width * 2) + 'px';
         },
 
         /*************
@@ -623,10 +623,10 @@ if (!ne.component) {
          * @private
          */
         _getWidth: function() {
-            return parseInt(this.movepanel.style[this._config.dimension], 10);
+            return parseInt(this.wrapper.style[this._config.dimension], 10);
         },
         _getElementPos: function() {
-            return parseInt(this.movepanel.style[this._config.way], 10);
+            return parseInt(this.wrapper.style[this._config.way], 10);
         },
         /**
          * get whether is back or forward

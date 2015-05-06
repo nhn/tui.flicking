@@ -20,23 +20,23 @@ describe('flicking flow test', function() {
             '<span>flick 5</span>'
         ];
 
-        flick = new ne.component.Flicking({
+        flick = new ne.component.m.Flicking({
             element: document.getElementById('flick'),
-            movepanel: document.getElementById('flick-wrap1'),
-            useMagnetic: false,
+            wrapper: document.getElementById('flick-wrap1'),
+            isMagnetic: false,
             data: data,
             flow: 'horizontal'
         });
-        flick1 = new ne.component.Flicking({
+        flick1 = new ne.component.m.Flicking({
             element: document.getElementById('flick2'),
-            movepanel: document.getElementById('flick-wrap2')
+            wrapper: document.getElementById('flick-wrap2')
         });
     });
 
     it('flicking is defined', function() {
         expect(flick).toBeDefined();
         expect(flick1).toBeDefined();
-        var child = flick.movepanel.childNodes;
+        var child = flick.wrapper.childNodes;
         expect(child.length).toBe(5);
     });
 
