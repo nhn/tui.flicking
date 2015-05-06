@@ -19,16 +19,20 @@
 </div>
 <div id="move"></div>
 <script type="text/javascript">
+
     var flick = new ne.component.m.Flicking({
-        element: document.getElementById('flick'),
-        wrapper: document.getElementById('flick-wrap1'),
-        flow: 'horizontal',
-        isMagnetic: true,
-        isCircular: true,
-        isFixedHTML: false,
-        itemClass: 'item',
-        data: '<strong style="color:white;display:block;text-align:center;margin-top:100px">item</strong>',
-        select: 1
+        element: document.getElementById('flick'), // element(mask element)
+        wrapper: document.getElementById('flick-wrap1'), // warpper
+        flow: 'horizontal', // direction ('horizontal|vertical)
+        isMagnetic: true, // use magnetic
+        isCircular: true, // circular
+        isFixedHTML: false, // fixed HTML
+        itemClass: 'item', // item(panel) class
+        data: '<strong style="color:white;display:block;text-align:center;margin-top:100px">item</strong>', // item innerHTML
+        select: 1, // select
+        flickRange: 100, // flickRange(Criteria to cognize)
+        effect: 'linear', // effect(default linear)
+        duration: 300 // animation duration
     });
 
     var leftcount = 0,

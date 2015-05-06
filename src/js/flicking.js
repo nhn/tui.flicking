@@ -19,20 +19,20 @@ if (!ne.component.m) {
     /**
      * @namespace ne.component.m.Flicking
      * @example
-     *  var flick = new ne.component.m.Flicking({
-     *      element: document.getElementById('flick'),
-     *      wrapper: document.getElementById('flick-wrap1'),
-     *      flow: 'horizontal',
-     *      isMagnetic: true,
-     *      isCircular: true,
-     *      isFixedHTML: false,
-     *      itemClass: 'item',
-     *      data: '<strong>item</strong>',
-     *      select: 1,
-     *      effect: 'linaer',
-     *      duration: 100,
-     *      flickRange: 50
-     *  });
+     * var flick = new ne.component.m.Flicking({
+     *    element: document.getElementById('flick'), // element(mask element)
+     *    wrapper: document.getElementById('flick-wrap1'), // warpper
+     *    flow: 'horizontal', // direction ('horizontal|vertical)
+     *    isMagnetic: true, // use magnetic
+     *    isCircular: true, // circular
+     *    isFixedHTML: false, // fixed HTML
+     *    itemClass: 'item', // item(panel) class
+     *    data: '<strong style="color:white;display:block;text-align:center;margin-top:100px">item</strong>', // item innerHTML
+     *    select: 1, // select
+     *    flickRange: 100, // flickRange(Criteria to cognize)
+     *    effect: 'linear', // effect(default linear)
+     *    duration: 300 // animation duration
+     * });
      *
      *
      */
@@ -83,6 +83,21 @@ if (!ne.component.m) {
          * initialize methods
          *************/
 
+        /**
+         * initialize
+         * @param option
+         *      @param option.element mask element(root element)
+         *      @param option.wrapper wrapper element
+         *      @param [option.flow='horizontal'] direction('horizontal|vertical')
+         *      @param [option.isMaginetic=true] use magnetic
+         *      @param [option.isCircular=true] circular
+         *      @param [option.isFixedHTML=true] fixed HTML
+         *      @param [option.itemClass='item'] item(panel) class
+         *      @param [option.data=false] html data(isFixedHTML == false fixed HTML)
+         *      @param [option.flickRange=50] flickRange(criteria to cognize)
+         *      @param [option.effect='linear'] effecrt
+         *      @param [option.duration=100] animation duration
+         */
         init: function(option) {
             // options
             this.element = option.element;
