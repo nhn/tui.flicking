@@ -1,5 +1,5 @@
 /**
- * @fileoverview
+ * @fileoverview 모바일 플리킹을 지원하는 컴포넌트.
  */
 
 
