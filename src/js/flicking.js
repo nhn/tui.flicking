@@ -110,7 +110,7 @@ if (!ne.component.m) {
                 this._makeItems(option.data || '');
             }
 
-            // init helper for movehelper, movedetector
+            // init helper for MoveAnimator, movedetector
             this._initHelpers();
             this._initElements();
             this._initWrap();
@@ -145,8 +145,8 @@ if (!ne.component.m) {
          * @private
          */
         _initHelpers: function() {
-            // Movehelper component
-            this.mover = new ne.component.MoveHelper({
+            // MoveAnimator component
+            this.mover = new ne.component.MoveAnimator({
                 flow: this.flow,
                 element: this.wrapper,
                 effect: this.effect,

@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "code-snippet": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/code-snippet.git#1.0.1",
-    "move-helper": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-move-helper#develop",
+    "move-animator": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-move-animator#develop",
     "discriminator": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-move-detector.git#develop"
   },
   "devDependencies": {

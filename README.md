@@ -14,7 +14,7 @@ Flicking
 
 ## Documentation
 * code-snippet :  http://github.nhnent.com/fe/code-snippet
-* move-helper : http://github.nhnent.com/fe/component-move-helper
+* move-animator : http://github.nhnent.com/fe/component-move-animator
 * move-detector : http://github.nhnent.com/fe/component-move-detector
 
 ## Dependency

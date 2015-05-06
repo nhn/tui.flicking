@@ -1,5 +1,5 @@
 /**
- * @fileoverview
+ * @fileoverview 모바일 플리킹을 지원하는 컴포넌트.
  */
 
 
@@ -9,6 +9,10 @@ if (!ne) {
 
 if (!ne.component) {
     window.ne.component = ne.component = {};
+}
+
+if (!ne.component.m) {
+    window.ne.component.m = ne.component.m = {};
 }
 
 (function(exports) {
@@ -24,7 +28,10 @@ if (!ne.component) {
      *      isFixedHTML: false,
      *      itemClass: 'item',
      *      data: '<strong>item</strong>',
-     *      select: 1
+     *      select: 1,
+     *      effect: 'linaer',
+     *      duration: 100,
+     *      flickRange: 50
      *  });
      *
      *
@@ -59,6 +66,18 @@ if (!ne.component) {
          * model use or not
          */
         isFixedHTML: true,
+        /**
+         * 플리킹으로 처리되는 기본 영역
+         */
+        flickRange: 50,
+        /**
+         * 프리킹 모션 이펙트
+         */
+        effect: 'linear',
+        /**
+         * 플리킹 이동 duration
+         */
+        duration: 100,
 
         /*************
          * initialize methods
@@ -75,6 +94,9 @@ if (!ne.component) {
             this.isMagnetic = ne.util.isExisty(option.isMagnetic) ? option.isMagnetic : this.isMagnetic;
             this.isCircular = ne.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
             this.isFixedHTML = ne.util.isExisty(option.isFixedHTML) ? option.isFixedHTML : this.isFixedHTML;
+            this.effect = option.effect || this.effect;
+            this.flickRange = option.flickRange || this.flickRange;
+            this.duration = option.duration || this.duration;
 
             // to figure position to move
             this.startPos = {};
@@ -83,12 +105,12 @@ if (!ne.component) {
             // data is set by direction or flow
             this._setConfig();
 
-            // if data isn't fixed,make elemen
+            // 고정된 html이 아닐경우 html 엘리먼트들을 생성
             if (!this.isFixedHTML) {
                 this._makeItems(option.data || '');
             }
 
-            // init helper for movehelper, movedetector
+            // init helper for MoveAnimator, movedetector
             this._initHelpers();
             this._initElements();
             this._initWrap();
@@ -123,20 +145,20 @@ if (!ne.component) {
          * @private
          */
         _initHelpers: function() {
-            // Movehelper component
-            this.mover = new ne.component.MoveHelper({
+            // MoveAnimator component
+            this.mover = new ne.component.MoveAnimator({
                 flow: this.flow,
                 element: this.wrapper,
-                effect: 'linear',
-                duration: 100
+                effect: this.effect,
+                duration: this.duration
             });
             // MoveDetector component
             this.movedetect = new ne.component.MoveDetector({
-                flickRange: 50
+                flickRange: this.flickRange
             });
         },
         /**
-         * initialize panels
+         * 래퍼를 초기화 한다.
          * @private
          */
         _initWrap: function() {
@@ -167,7 +189,7 @@ if (!ne.component) {
             this.element.addEventListener('touchstart', ne.util.bind(this.onTouchStart, this));
         },
         /**
-         * not static case, make element by data
+         * html 고정이 아닐때, 입력된 데이터로 엘리먼트를 생성한다.
          * @param data
          * @private
          */
@@ -188,11 +210,6 @@ if (!ne.component) {
             item.style[this._config.dimension] = this._config.width + 'px';
             return item;
         },
-        /**
-         * wrapper's width or height
-         * @returns {*}
-         * @private
-         */
 
         /*************
          * event handle methods
@@ -204,7 +221,7 @@ if (!ne.component) {
          * @private
          */
         onTouchStart: function(e) {
-            if (self.lock) {
+            if (this.lock) {
                 return;
             }
 
@@ -215,10 +232,7 @@ if (!ne.component) {
             }
 
             // save touchstart data
-            this.startPos[this._config.way] = this._getElementPos();
-            this.savePos.x = this.startPos.x = e.touches[0].clientX;
-            this.savePos.y = this.startPos.y = e.touches[0].clientY;
-            this.startPos.time = (new Date()).getTime();
+            this._saveTouchStartData(e.touches[0]);
 
             document.addEventListener('touchmove', this.onTouchMove);
             document.addEventListener('touchend', this.onTouchEnd);
@@ -263,6 +277,17 @@ if (!ne.component) {
 
             document.removeEventListener('touchMove', this.onTouchMove);
             document.removeEventListener('touchEnd', this.onTouchEnd);
+        },
+        /**
+         * 터치 이벤트 좌표를 저장한다.
+         * @param {object} point 터치 이벤트 좌표
+         * @private
+         */
+        _saveTouchStartData: function(point) {
+            this.startPos[this._config.way] = this._getElementPos();
+            this.savePos.x = this.startPos.x = point.clientX;
+            this.savePos.y = this.startPos.y = point.clientY;
+            this.startPos.time = (new Date()).getTime();
         },
 
         /*************
@@ -639,4 +664,4 @@ if (!ne.component) {
         }
     });
     ne.util.CustomEvents.mixin(exports.Flicking);
-})(ne.component);
+})(ne.component.m);
