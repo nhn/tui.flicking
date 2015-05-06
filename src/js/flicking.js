@@ -105,7 +105,7 @@ if (!ne.component.m) {
             // data is set by direction or flow
             this._setConfig();
 
-            // if data isn't fixed,make elemen
+            // 고정된 html이 아닐경우 html 엘리먼트들을 생성
             if (!this.isFixedHTML) {
                 this._makeItems(option.data || '');
             }
@@ -232,10 +232,7 @@ if (!ne.component.m) {
             }
 
             // save touchstart data
-            this.startPos[this._config.way] = this._getElementPos();
-            this.savePos.x = this.startPos.x = e.touches[0].clientX;
-            this.savePos.y = this.startPos.y = e.touches[0].clientY;
-            this.startPos.time = (new Date()).getTime();
+            this._saveTouchStartData(e.touches[0]);
 
             document.addEventListener('touchmove', this.onTouchMove);
             document.addEventListener('touchend', this.onTouchEnd);
@@ -280,6 +277,17 @@ if (!ne.component.m) {
 
             document.removeEventListener('touchMove', this.onTouchMove);
             document.removeEventListener('touchEnd', this.onTouchEnd);
+        },
+        /**
+         * 터치 이벤트 좌표를 저장한다.
+         * @param {object} point 터치 이벤트 좌표
+         * @private
+         */
+        _saveTouchStartData: function(point) {
+            this.startPos[this._config.way] = this._getElementPos();
+            this.savePos.x = this.startPos.x = point.clientX;
+            this.savePos.y = this.startPos.y = point.clientY;
+            this.startPos.time = (new Date()).getTime();
         },
 
         /*************
