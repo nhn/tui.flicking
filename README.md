@@ -12,15 +12,26 @@ Flicking
 
 ## Sample Image
 
-
 ## Documentation
-
+* code-snippet :  http://github.nhnent.com/fe/code-snippet
+* move-animator : http://github.nhnent.com/fe/component-move-animator
+* move-detector : http://github.nhnent.com/fe/component-move-detector
 
 ## Dependency
 
 ## Test environment
+* Galaxy Note I(Android 2.3), II(Android 4.1)
+* Galaxy S III(Android 4.0), IV(Android 4.2.2)
+* iPhone 5S(iOS 8)
+* Chrome Emulator
 
 ## Download/Install
-
+* Bower:
+   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flicking.git#master"`
+   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flicking.git[#tag]"`
+* Download: https://github.nhnent.com/fe/component-m-flicking
 
 ## History
+| Version | Description | Date | Developer |
+| ---- | ---- | ---- | ---- |
+| <a href="https://github.nhnent.com/pages/fe/component-m-flick/1.0.0/">1.0.0</a> | 최초개발 | 2015.05 | FE개발팀 이제인 <jein.yi@nhnent.com> |
