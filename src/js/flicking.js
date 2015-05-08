@@ -337,7 +337,9 @@ if (!ne.component.m) {
             if (!this.isFixedHTML) {
                 this._removePadding({ way: none });
             } else {
-                this._removeClones({ way: none });
+                if (this.isCircular) {
+                    this._removeClones({ way: none });
+                }
             }
         },
 
@@ -545,6 +547,7 @@ if (!ne.component.m) {
          * @private
          */
         _removeClones: function(pos) {
+            console.log(this.clones);
             var removeCount = this.clones.count,
                 totalCount = removeCount * 2,
                 leftCount = removeCount,
