@@ -131,6 +131,7 @@ if (!ne.component.m) {
             this._initWrap();
             this._attachEvent();
         },
+
         /**
          * set config
          * @private
@@ -155,6 +156,7 @@ if (!ne.component.m) {
                 };
             }
         },
+
         /**
          * init method for helper objects
          * @private
@@ -172,6 +174,7 @@ if (!ne.component.m) {
                 flickRange: this.flickRange
             });
         },
+
         /**
          * 래퍼를 초기화 한다.
          * @private
@@ -181,6 +184,7 @@ if (!ne.component.m) {
             this.wrapper.style[config.way] = '0px';
             this.wrapper.style[config.dimension] = config.width * this.elementCount + 'px';
         },
+
         /**
          * item element width
          * @private
@@ -194,6 +198,7 @@ if (!ne.component.m) {
                 }
             }, this);
         },
+
         /**
          * add event handler
          * @private
@@ -203,18 +208,20 @@ if (!ne.component.m) {
             this.onTouchEnd = ne.util.bind(this._onTouchEnd, this);
             this.element.addEventListener('touchstart', ne.util.bind(this.onTouchStart, this));
         },
+
         /**
          * html 고정이 아닐때, 입력된 데이터로 엘리먼트를 생성한다.
-         * @param data
+         * @param {object} data 입력된 데이터 정보
          * @private
          */
         _makeItems: function(data) {
             var item = this._getElement(data);
             this.wrapper.appendChild(item);
         },
+
         /**
          * make element and return
-         * @param data
+         * @param {object} data html 데이터
          * @returns {Element}
          * @private
          */
@@ -233,10 +240,9 @@ if (!ne.component.m) {
         /**
          * touch start event handler
          * @param {object} e touchstart event
-         * @private
          */
         onTouchStart: function(e) {
-            if (this.lock) {
+            if (this.isLocked) {
                 return;
             }
 
@@ -252,6 +258,7 @@ if (!ne.component.m) {
             document.addEventListener('touchmove', this.onTouchMove);
             document.addEventListener('touchend', this.onTouchEnd);
         },
+
         /**
          * toucn move event handle
          * @param {event} e touchmove event
@@ -278,6 +285,7 @@ if (!ne.component.m) {
             movement = end - start;
             this.wrapper.style[this._config.way] = pos[this._config.way] + movement + 'px';
         },
+
         /**
          * touch end event hendle
          * @private
@@ -293,6 +301,7 @@ if (!ne.component.m) {
             document.removeEventListener('touchMove', this.onTouchMove);
             document.removeEventListener('touchEnd', this.onTouchEnd);
         },
+
         /**
          * 터치 이벤트 좌표를 저장한다.
          * @param {object} point 터치 이벤트 좌표
@@ -318,6 +327,7 @@ if (!ne.component.m) {
             this._setPrev();
             this._setNext();
         },
+
         /**
          * reset elements for moving
          * @private
@@ -330,6 +340,7 @@ if (!ne.component.m) {
                 this._removeClones({ way: none });
             }
         },
+
         /**
          * active magnetic to fix position wrapper and clones
          * @private
@@ -342,9 +353,10 @@ if (!ne.component.m) {
                 end: (new Date()).getTime()
             });
         },
+
         /**
          * set prev panel
-         * @param {string} data
+         * @param {string} data flicking 데이터
          */
         setPrev: function(data) {
             var config = this._config;
@@ -353,17 +365,19 @@ if (!ne.component.m) {
             this.wrapper.style[config.way] = parseInt(this.wrapper.style[config.way], 10) - config.width + 'px';
             this.wrapper.insertBefore(element, this.wrapper.firstChild);
         },
+
         /**
          * set next panel
-         * @param {string} data
+         * @param {string} data flicking 데이터
          */
         setNext: function(data) {
             var element = this._getElement(data);
             this.expandMovePanel();
             this.wrapper.appendChild(element);
         },
+
         /**
-         * save clone elements
+         * save clone elements 엘리먼트 복
          * @private
          */
         _setClone: function() {
@@ -376,6 +390,7 @@ if (!ne.component.m) {
             });
             this.clones.count = count;
         },
+
         /**
          * set prev element - static elements
          * @private
@@ -400,6 +415,7 @@ if (!ne.component.m) {
             wrapper.style[config.dimension] = this._getWidth() + width + 'px';
             wrapper.style[config.way] = parseInt(wrapper.style[config.way], 10) - width + 'px';
         },
+
         /**
          * set next element - static elements
          * @private
@@ -417,12 +433,14 @@ if (!ne.component.m) {
 
             wrapper.style[config.dimension] = this._getWidth() + width + 'px';
         },
+
         /**
          * expand wrapper's width | height
          */
         expandMovePanel: function() {
             this.wrapper.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
         },
+
         /**
          * reduce wrapper's width | height
          */
@@ -451,6 +469,7 @@ if (!ne.component.m) {
             this.movedetect.extractType(evtList);
             return this.movedetect.type === 'flick';
         },
+
         /**
          * fix element pos, if flicking use magnetic
          * @param {object} info information for fix element pos.
@@ -472,6 +491,7 @@ if (!ne.component.m) {
 
             this._moveTo(pos, way);
         },
+
         /**
          * move to pos
          * @param {object} pos
@@ -483,7 +503,7 @@ if (!ne.component.m) {
             var origin = this.startPos[this._config.way],
                 moved = this._getMoved(),
                 start = origin + moved,
-                complete = pos.cover ? ne.util.bind(this._complete, this, pos, true) : ne.util.bind(this._complete, this, pos);
+                complete = ne.util.bind(this._complete, this, pos, pos.cover);
             this.mover.setDistance(pos.dist);
             this.mover.action({
                 direction: way,
@@ -507,7 +527,7 @@ if (!ne.component.m) {
                 this.fire('returnFlick', pos);
             }
 
-            this.lock = false;
+            this.isLocked = false;
             this.wrapper.style[this._config.way] = pos.dest + 'px';
 
             if (!this.isFixedHTML) {
@@ -518,6 +538,7 @@ if (!ne.component.m) {
                 }
             }
         },
+
         /**
          * clones remove for static circular
          * @private
@@ -542,6 +563,7 @@ if (!ne.component.m) {
             this.wrapper.style[config.dimension] = this._getWidth() - config.width * totalCount + 'px';
             this.wrapper.style[config.way] = 0;
         },
+
         /**
          * remove clone elements
          * @param {number} count clone element count
@@ -560,6 +582,7 @@ if (!ne.component.m) {
                 wrapper.removeChild(wrapper[type]);
             }
         },
+
         /**
          * remove padding used for drag
          * @param pos
@@ -604,9 +627,11 @@ if (!ne.component.m) {
                 cover: false
             }
         },
+
         /**
          * get cover distance and destination
-         * @param way
+         * @param {string} way 방향
+         * @param {number} origin 원래 이동 너비
          * @returns {{dest: *, dist:*}}
          * @private
          */
@@ -623,6 +648,7 @@ if (!ne.component.m) {
             }
             return pos;
         },
+
         /**
          * get moved distance by drag
          * @returns {number}
@@ -634,6 +660,7 @@ if (!ne.component.m) {
                 moved = to - from;
             return moved;
         },
+
         /**
          * edge check but circular
          * @private
@@ -643,7 +670,7 @@ if (!ne.component.m) {
                 return false;
             }
 
-            var isNext = this._isBackward() ? false : true,
+            var isNext = !this._isBackward(),
                 current = this._getElementPos(),
                 width = this._getWidth();
 
@@ -651,23 +678,27 @@ if (!ne.component.m) {
                 return true;
             }
 
-            if (!isNext && current > 0) {
-                return true;
-            }
-
-            return false;
+            return (!isNext && current > 0);
         },
+
         /**
-         * get width movepanels
+         * get width warpper
          * @returns {Number}
          * @private
          */
         _getWidth: function() {
             return parseInt(this.wrapper.style[this._config.dimension], 10);
         },
+
+        /**
+         * get left px wrapper
+         * @returns {Number}
+         * @private
+         */
         _getElementPos: function() {
             return parseInt(this.wrapper.style[this._config.way], 10);
         },
+
         /**
          * get whether is back or forward
          * @returns {boolean}
