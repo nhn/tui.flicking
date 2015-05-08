@@ -362,7 +362,7 @@ if (!ne.component.m) {
             var config = this._config;
             var element = this._getElement(data);
             this.expandMovePanel();
-            this.wrapper.style[config.way] = parseInt(this.wrapper.style[config.way], 10) - config.width + 'px';
+            this.wrapper.style[config.way] = this._getElementPos() - config.width + 'px';
             this.wrapper.insertBefore(element, this.wrapper.firstChild);
         },
 
@@ -413,7 +413,7 @@ if (!ne.component.m) {
             }
 
             wrapper.style[config.dimension] = this._getWidth() + width + 'px';
-            wrapper.style[config.way] = parseInt(wrapper.style[config.way], 10) - width + 'px';
+            wrapper.style[config.way] = this._getElementPos() - width + 'px';
         },
 
         /**
@@ -476,39 +476,40 @@ if (!ne.component.m) {
          * @private
          */
         _fixInto: function(info) {
-            var way = this._isBackward() ? 'backward' : 'forward',
+            var isBackward = this._isBackward(),
                 isFlick = this._isFlick(info),
                 origin = this.startPos[this._config.way],
                 pos;
 
             if (!isFlick || this._isEdge(info)) {
-                way = (way === 'backward') ? 'forward' : 'backward';
-                pos = this._getReturnPos(way);
+                isBackward = !isBackward;
+                pos = this._getReturnPos(isBackward);
                 pos.recover = true;
             } else {
-                pos = this._getCoverPos(way, origin);
+                pos = this._getCoverPos(isBackward, origin);
             }
 
-            this._moveTo(pos, way);
+            this._moveTo(pos, isBackward);
         },
 
         /**
          * move to pos
-         * @param {object} pos
-         * @param {string} way
+         * @param {object} pos 이동 좌표
+         * @param {string} isBackward 역행인지 여부
          * @private
          */
-        _moveTo: function(pos, way) {
-            pos.way = way;
-            var origin = this.startPos[this._config.way],
+        _moveTo: function(pos, isBackward) {
+            var way = isBackward ? 'backward' : 'forward',
+                origin = this.startPos[this._config.way],
                 moved = this._getMoved(),
-                start = origin + moved,
-                complete = ne.util.bind(this._complete, this, pos, pos.cover);
+                start = origin + moved;
+            pos.way = way;
+
             this.mover.setDistance(pos.dist);
             this.mover.action({
                 direction: way,
                 start: start,
-                complete: complete
+                complete: ne.util.bind(this._complete, this, pos, pos.cover)
             });
         },
 
@@ -614,37 +615,37 @@ if (!ne.component.m) {
 
         /**
          * get return distance and destination
-         * @param way
+         * @param {boolean} isBackward 역행여부
          * @returns {{dest: *, dist: *}}
          * @private
          */
-        _getReturnPos: function(way) {
+        _getReturnPos: function(isBackward) {
             var moved = this._getMoved();
 
             return {
                 dest: this.startPos[this._config.way],
-                dist : (way === 'forward') ? -moved : moved,
+                dist : isBackward ? moved : -moved,
                 cover: false
             }
         },
 
         /**
          * get cover distance and destination
-         * @param {string} way 방향
+         * @param {boolean} isBackward 역행 여부
          * @param {number} origin 원래 이동 너비
          * @returns {{dest: *, dist:*}}
          * @private
          */
-        _getCoverPos: function(way, origin) {
+        _getCoverPos: function(isBackward, origin) {
             var moved = this._getMoved(),
                 pos = { cover: true };
 
-            if (way === 'forward') {
-                pos.dist = -this._config.width - moved;
-                pos.dest = origin - this._config.width;
-            } else {
+            if (isBackward) {
                 pos.dist = -this._config.width + moved;
                 pos.dest = origin + this._config.width;
+            } else {
+                pos.dist = -this._config.width - moved;
+                pos.dest = origin - this._config.width;
             }
             return pos;
         },
