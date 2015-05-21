@@ -17,9 +17,9 @@ Mobile Flick
 
 
 ## Dependency
-* code-snippet#~1.0.1
-* move-animator#~1.0.0
-* discriminator#~1.0.0
+* code-snippet-1.0.1
+* move-animator-1.0.0
+* discriminator-1.0.0
 
 ## Test environment
 * Mobile
