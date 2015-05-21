@@ -1,4 +1,4 @@
-M Flick
+Mobile Flick
 ===============
 플리킹 컴포넌트.<br>모바일에서 화면의 플리킹을 제공한다.
 
@@ -10,9 +10,9 @@ M Flick
 * 마그네틱 기능 설정
 
 ## Documentation
-* API : https://github.nhnent.com/pages/fe/component-m-flick/1.0.0
-* Tutorial : https://github.nhnent.com/fe/component-m-flick/wiki/플리킹-컴포넌트-컴포넌트-적용방법
-* CI : http://fe.nhnent.com:8080/jenkins/job/component-m-flick/
+* API : https://github.nhnent.com/pages/fe/component-mobile-flick/1.0.0
+* Tutorial : https://github.nhnent.com/fe/component-mobile-flick/wiki/플리킹-컴포넌트-컴포넌트-적용방법
+* CI : http://fe.nhnent.com:8080/jenkins/job/component-mobile-flick/
 
 
 
@@ -31,11 +31,11 @@ M Flick
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flick.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flick.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-m-flick
+   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-mobile-flick.git#master"`
+   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-mobile-flick.git[#tag]"`
+* Download: https://github.nhnent.com/fe/component-mobile-flick
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="https://github.nhnent.com/pages/fe/component-m-flick/1.0.0">1.0.0</a> | 배포 | 2015.05 | 이제인 <jein.yi@nhnent.com> |
+| <a href="https://github.nhnent.com/pages/fe/component-mobile-flick/1.0.0">1.0.0</a> | 배포 | 2015.05 | 이제인 <jein.yi@nhnent.com> |
