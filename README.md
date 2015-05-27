@@ -18,9 +18,9 @@ Mobile Flicking
 
 
 ## Dependency
-* code-snippet: ~1.0.2
-* move-animator: ~1.0.0
-* discriminator: ~1.0.0
+* ne-code-snippet: ~1.0.2
+* ne-component-effect-slide: ~1.0.0
+* ne-component-gesture-flick: ~1.0.0
 
 ## Test environment
 * Mobile
