@@ -9,9 +9,11 @@
     "사용자 이벤트 제공",
     "마그네틱 기능 설정"
   ],
+  "tutorial": "플리킹",
+  "samplePage": "sample1.html",
   "private": true,
   "dependency": [
-      "code-snippet#~1.0.1",
+      "code-snippet#~1.0.2",
       "move-animator#~1.0.0",
       "discriminator#~1.0.0"
   ],
@@ -23,7 +25,6 @@
       "Chrome Emulator"
     ]
   },
-  "tutorial": "플리킹-컴포넌트",
   "devDependencies": {
     "fedoc-template": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/share-fedoc-template.git",
     "grunt": "^0.4.5",

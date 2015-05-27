@@ -3,18 +3,7 @@
  * @fileoverview 모바일 플리킹을 지원하는 컴포넌트.
  */
 
-
-if (!ne) {
-    window.ne = ne = {};
-}
-
-if (!ne.component) {
-    window.ne.component = ne.component = {};
-}
-
-if (!ne.component.m) {
-    window.ne.component.m = ne.component.m = {};
-}
+e
 
 (function(exports) {
     /**

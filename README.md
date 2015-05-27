@@ -10,16 +10,17 @@ Mobile Flick
 * 마그네틱 기능 설정
 
 ## Documentation
-* API : https://github.nhnent.com/pages/fe/component-m-flick/1.0.0
-* Tutorial : https://github.nhnent.com/fe/component-m-flick/wiki/플리킹-컴포넌트-컴포넌트-적용방법
-* CI : http://fe.nhnent.com:8080/jenkins/job/component-m-flick/
+* **API** : https://github.nhnent.com/pages/fe/component-m-flick/1.0.0
+* **Tutorial** : https://github.nhnent.com/fe/component-m-flick/wiki/플리킹-컴포넌트-적용방법
+* **Sample** - https://github.nhnent.com/pages/fe/component-m-flick/1.0.0/tutorial-sample1.html
+* **CI** : http://fe.nhnent.com:8080/jenkins/job/component-m-flick/
 
 
 
 ## Dependency
-* code-snippet: v1.0.1
-* move-animator: v1.0.0
-* discriminator: v1.0.0
+* code-snippet: ~1.0.2
+* move-animator: ~1.0.0
+* discriminator: ~1.0.0
 
 ## Test environment
 * Mobile
@@ -38,4 +39,4 @@ Mobile Flick
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="https://github.nhnent.com/pages/fe/component-m-flick/1.0.0">1.0.0</a> | 배포 | 2015.05 | 이제인 <jein.yi@nhnent.com> |
+| <a href="https://github.nhnent.com/pages/fe/component-m-flick/1.0.0">1.0.0</a> | 배포 | 2015.05 | FE개발팀 이제인 <jein.yi@nhnent.com> |
