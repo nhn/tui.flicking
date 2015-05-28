@@ -1,7 +1,7 @@
 {
   "name": "component-m-flicking",
   "version": "1.0.0",
-  "description": "플리킹 컴포넌트.<br>모바일에서 화면의 플리킹을 제공한다.",
+  "description": "플리킹 컴포넌트<br>모바일에서 사용자 터치를 통해 화면의 플리킹을 제공한다.",
   "featureList": [
     "모바일 수직/수평 스와이프",
     "순환/비순환 플리킹 제공",
