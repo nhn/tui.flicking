@@ -13,12 +13,12 @@
   "samplePage": "sample1.html",
   "private": true,
   "dependency": [
-      "ne-code-snippet#~1.0.2",
-      "ne-component-effect-slide#~1.0.0",
-      "ne-component-gesture-reader#~1.0.0"
+    "ne-code-snippet#~1.0.2",
+    "ne-component-effect-slide#~1.0.0",
+    "ne-component-gesture-reader#~1.0.0"
   ],
   "test": {
-    "Mobile" : [
+    "Mobile": [
       "Galaxy Note I(Android 2.3), II(Android 4.1)",
       "Galaxy S III(Android 4.0), IV(Android 4.2.2)",
       "iPhone 5S(iOS 8)",
@@ -43,18 +43,19 @@
     "karma-junit-reporter": "^0.2.2",
     "karma-requirejs": "^0.2.2",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
+    "readme-builder": "git+https://github.com/jein-yi/readme-builder.git",
     "requirejs": "^2.1.14"
   },
   "scripts": {
     "doc": "./node_modules/.bin/jsdoc -c conf.json"
   },
   "author": "FE",
-  "history" : {
-    "1.0.0" : {
-      "content" : "배포",
+  "history": {
+    "1.0.0": {
+      "content": "배포",
       "date": "2015.05",
       "author": "이제인 <jein.yi@nhnent.com>",
-      "hasAPI" : true
+      "hasAPI": true
     }
   }
 }
