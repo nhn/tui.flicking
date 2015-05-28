@@ -13,7 +13,7 @@ Mobile Flicking
 * **API** : https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0
 * **Tutorial** : https://github.nhnent.com/fe/component-m-flicking/wiki/플리킹-컴포넌트-적용방법
 * **Sample** - https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0/tutorial-sample1.html
-* **CI** : http://fe.nhnent.com:8080/jenkins/job/component-m-flicking/
+* **CI** : 준비중
 
 
 
