@@ -10,10 +10,10 @@ Mobile Flicking
 * 마그네틱 기능 설정
 
 ## Documentation
-* **API** : https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0
-* **Tutorial** : https://github.nhnent.com/fe/component-m-flicking/wiki/플리킹-컴포넌트-적용방법
-* **Sample** - https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0/tutorial-sample1.html
-* **CI** : 준비중
+* **API** : https://nhnent.github.io/fe.component-m-flicking/1.0.0
+* **Tutorial** : https://github.com/nhnent/fe.component-m-flicking/wiki/플리킹-컴포넌트-적용방법
+* **Sample** - https://nhnent.github.io/fe.component-m-flicking/1.0.0/tutorial-sample1.html
+
 
 
 
@@ -32,9 +32,9 @@ Mobile Flicking
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flicking.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-flicking.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-m-flicking
+   * 최신버전 : `bower install ne-component-m-flicking#master`
+   * 특정버전 : `bower install ne-component-m-flicking[#tag]`
+* Download: https://github.com/nhnent/fe.component-m-flicking
 
 ## History
 | Version | Description | Date | Developer |
