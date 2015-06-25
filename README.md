@@ -40,3 +40,6 @@ Mobile Flicking
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
 | <a href="https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0">1.0.0</a> | 배포 | 2015.05 | FE개발팀 이제인 <jein.yi@nhnent.com> |
+
+## LICENSE
+[MIT 라이선스](LICENSE)로 자유롭게 사용할 수 있습니다.
