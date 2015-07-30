@@ -10,9 +10,9 @@ Mobile Flicking
 * 마그네틱 기능 설정
 
 ## Documentation
-* **API** : https://nhnent.github.io/fe.component-m-flicking/lastest
+* **API** : https://nhnent.github.io/fe.component-m-flicking/latest
 * **Tutorial** : https://github.com/nhnent/fe.component-m-flicking/wiki/플리킹-컴포넌트-적용방법
-* **Sample** - https://nhnent.github.io/fe.component-m-flicking/1.0.0/tutorial-sample1.html
+* **Sample** - https://nhnent.github.io/fe.component-m-flicking/latest/tutorial-sample1.html
 
 
 
