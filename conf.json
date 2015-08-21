@@ -1,4 +1,4 @@
-{
+sudo {
   "source": {
     "include": [
       "src/js/flicking.js",
