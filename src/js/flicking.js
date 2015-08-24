@@ -26,7 +26,7 @@
 var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
-     * @type boolean
+     * @type booleanㅡ
      */
     isMagnetic: true,
     /**
@@ -149,14 +149,14 @@ var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype 
      */
     _initHelpers: function() {
         // MoveAnimator component
-        this.mover = new ne.component.MoveAnimator({
+        this.mover = new ne.component.Effect.Slide({
             flow: this.flow,
             element: this.wrapper,
             effect: this.effect,
             duration: this.duration
         });
         // MoveDetector component
-        this.movedetect = new ne.component.MoveDetector({
+        this.movedetect = new ne.component.Gesture.Reader({
             flickRange: this.flickRange
         });
     },
