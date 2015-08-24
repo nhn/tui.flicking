@@ -23,7 +23,7 @@
  *
  *
  */
-Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
+var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
      * @type boolean
