@@ -700,6 +700,6 @@ var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype 
     }
 });
 
-ne.util.CustomEvents.mixin(exports.Flicking);
+ne.util.CustomEvents.mixin(Flicking);
 
 module.exports = Flicking;
