@@ -11,7 +11,7 @@ This component support flicking effect by touch event page on Mobile enviroment.
 
 ## Documentation
 * **API** : https://nhnent.github.io/fe.component-m-flicking/latest
-* **Tutorial** : https://github.com/nhnent/fe.component-m-flicking/wiki/FLicking-Tutorial
+* **Tutorial** : https://github.com/nhnent/fe.component-m-flicking/wiki/Flicking-Tutorial
 * **Sample** - https://nhnent.github.io/fe.component-m-flicking/latest/tutorial-sample1.html
 
 
