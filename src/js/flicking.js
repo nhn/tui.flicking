@@ -1,8 +1,7 @@
 /**
- * @fileoverview 모바일 플리킹을 지원하는 컴포넌트.
+ * @fileoverview The flicking component that support swipe user interaction on web browser.
+ * @author NHN Ent. FE dev team <dl_javascript@nhnent.com>
  */
-
-ne.util.defineNamespace('ne.component.m');
 
 /**
  * @namespace ne.component.m.Flicking
@@ -24,46 +23,46 @@ ne.util.defineNamespace('ne.component.m');
  *
  *
  */
-ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
+var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
-     * @type boolean
+     * @type booleanㅡ
      */
     isMagnetic: true,
     /**
-     * not static case, used template
+     * Template of panel item
      */
     template: '<div>{{data}}</div>',
     /**
-     * item ClassName
+     * A class name of flicking panel item
      */
     itemClass: 'panel',
     /**
-     * item Tag
+     * Flicking panel item html tag
      */
     itemTag: 'div',
     /**
-     * flow (horizontal|vertical)
+     * The flow of flicking(horizontal|vertical)
      */
     flow: 'horizontal',
     /**
-     * roop flicking
+     * The roop flicking
      */
     isCircular: true,
     /**
-     * model use or not
+     * Whether model use or not
      */
     isFixedHTML: true,
     /**
-     * 플리킹으로 처리되는 기본 영역
+     * The distance that to be determined to flicking.
      */
     flickRange: 50,
     /**
-     * 프리킹 모션 이펙트
+     * A effect of flicking
      */
     effect: 'linear',
     /**
-     * 플리킹 이동 duration
+     * A duration of flicking
      */
     duration: 100,
 
@@ -108,7 +107,6 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
         // data is set by direction or flow
         this._setConfig();
 
-        // 고정된 html이 아닐경우 html 엘리먼트들을 생성
         if (!this.isFixedHTML) {
             this._makeItems(option.data || '');
         }
@@ -121,7 +119,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * set config
+     * Set configurations
      * @private
      */
     _setConfig: function() {
@@ -146,25 +144,25 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * init method for helper objects
+     * Initialize method for helper objects
      * @private
      */
     _initHelpers: function() {
         // MoveAnimator component
-        this.mover = new ne.component.MoveAnimator({
+        this.mover = new ne.component.Effect.Slide({
             flow: this.flow,
             element: this.wrapper,
             effect: this.effect,
             duration: this.duration
         });
         // MoveDetector component
-        this.movedetect = new ne.component.MoveDetector({
+        this.movedetect = new ne.component.Gesture.Reader({
             flickRange: this.flickRange
         });
     },
 
     /**
-     * 래퍼를 초기화 한다.
+     * Initialize wrapper element.
      * @private
      */
     _initWrap: function() {
@@ -174,7 +172,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * item element width
+     * Initialize panel item element
      * @private
      */
     _initElements: function() {
@@ -188,7 +186,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * add event handler
+     * Attach event handler
      * @private
      */
     _attachEvent: function() {
@@ -198,7 +196,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * html 고정이 아닐때, 입력된 데이터로 엘리먼트를 생성한다.
+     * Create elements, if panel html is not fixed.
      * @param {object} data 입력된 데이터 정보
      * @private
      */
@@ -208,7 +206,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * make element and return
+     * Make element and return
      * @param {object} data html 데이터
      * @returns {Element}
      * @private
@@ -226,7 +224,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
      *************/
 
     /**
-     * touch start event handler
+     * Handle to touch start event
      * @param {object} e touchstart event
      */
     onTouchStart: function(e) {
@@ -248,7 +246,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * toucn move event handle
+     * Handle to touch move event
      * @param {event} e touchmove event
      * @private
      */
@@ -275,7 +273,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * touch end event hendle
+     * Handle to touch end event
      * @private
      */
     _onTouchEnd: function() {
@@ -291,7 +289,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * 터치 이벤트 좌표를 저장한다.
+     * Save touch position
      * @param {object} point 터치 이벤트 좌표
      * @private
      */
@@ -307,7 +305,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
      *************/
 
     /**
-     * prepare elements for moving
+     * Prepare elements for moving
      * @private
      */
     _prepareMoveElement: function() {
@@ -317,7 +315,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * reset elements for moving
+     * Reset elements for moving
      * @private
      */
     _resetMoveElement: function() {
@@ -332,7 +330,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * active magnetic to fix position wrapper and clones
+     * Active magnetic to fix position wrapper and clones
      * @private
      */
     _activeMagnetic: function() {
@@ -345,8 +343,8 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * set prev panel
-     * @param {string} data flicking 데이터
+     * Set prev panel
+     * @param {string} data A data of flicking
      */
     setPrev: function(data) {
         var config = this._config;
@@ -357,8 +355,8 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * set next panel
-     * @param {string} data flicking 데이터
+     * Set next panel
+     * @param {string} data  A data of flicking
      */
     setNext: function(data) {
         var element = this._getElement(data);
@@ -367,7 +365,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * save clone elements 엘리먼트 복
+     * Set clone elements
      * @private
      */
     _setClone: function() {
@@ -382,7 +380,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * set prev element - static elements
+     * Set prev element - static elements
      * @private
      */
     _setPrev: function() {
@@ -407,7 +405,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * set next element - static elements
+     * Set next element - static elements
      * @private
      */
     _setNext: function() {
@@ -425,14 +423,14 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * expand wrapper's width | height
+     * Expand wrapper's width | height
      */
     expandMovePanel: function() {
         this.wrapper.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
     },
 
     /**
-     * reduce wrapper's width | height
+     * Reduce wrapper's width | height
      */
     reduceMovePanel: function() {
         this.wrapper.style[this._config.dimension] = this._getWidth() - this._config.width + 'px';
@@ -443,7 +441,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
      *************/
 
     /**
-     * check flicking
+     * Check whether flicking or not
      * @param info
      * @private
      */
@@ -461,7 +459,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * fix element pos, if flicking use magnetic
+     * Fix element pos, if flicking use magnetic
      * @param {object} info information for fix element pos.
      * @private
      */
@@ -483,7 +481,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * move to pos
+     * Move to pos
      * @param {object} pos 이동 좌표
      * @param {string} isBackward 역행인지 여부
      * @private
@@ -508,7 +506,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
      *************/
 
     /**
-     * after move comteom Event fire
+     * Callback for move after, this method fire custom events
      * @private
      */
     _complete: function(pos, customFire) {
@@ -531,7 +529,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * clones remove for static circular
+     * Remove clones for static circular
      * @private
      */
     _removeClones: function(pos) {
@@ -557,7 +555,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * remove clone elements
+     * Remove clone elements
      * @param {number} count clone element count
      * @param {string} type key target node(firstChild|lastChild)
      * @private
@@ -576,7 +574,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * remove padding used for drag
+     * Remove padding used for drag
      * @param pos
      * @private
      */
@@ -605,7 +603,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
      *************/
 
     /**
-     * get return distance and destination
+     * Get return distance and destination
      * @param {boolean} isBackward 역행여부
      * @returns {{dest: *, dist: *}}
      * @private
@@ -621,7 +619,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * get cover distance and destination
+     * Get cover distance and destination
      * @param {boolean} isBackward 역행 여부
      * @param {number} origin 원래 이동 너비
      * @returns {{dest: *, dist:*}}
@@ -642,7 +640,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * get moved distance by drag
+     * Get moved distance by drag
      * @returns {number}
      * @private
      */
@@ -654,7 +652,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * edge check but circular
+     * Check whether edge or not(but circular)
      * @private
      */
     _isEdge: function() {
@@ -674,7 +672,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * get width warpper
+     * Get width wrapper
      * @returns {Number}
      * @private
      */
@@ -683,7 +681,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * get left px wrapper
+     * Get left px wrapper
      * @returns {Number}
      * @private
      */
@@ -692,7 +690,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
     },
 
     /**
-     * get whether is back or forward
+     * Get whether is back or forward
      * @returns {boolean}
      * @private
      */
@@ -701,4 +699,7 @@ ne.component.m.Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking
         return direction === this._config.direction[0];
     }
 });
-ne.util.CustomEvents.mixin(exports.Flicking);
+
+ne.util.CustomEvents.mixin(Flicking);
+
+module.exports = Flicking;

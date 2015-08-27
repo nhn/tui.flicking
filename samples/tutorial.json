@@ -1,11 +1,11 @@
 {
   "sample1": {
-    "title": "기본 예제"
+    "title": "Default Example"
   },
   "sample1_1": {
-    "title": "순환 예제"
+    "title": "Circular Example"
   },
   "sample2": {
-    "title": "정적데이터"
+    "title": "Static Data"
   }
 }

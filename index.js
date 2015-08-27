@@ -1,0 +1,1 @@
+ne.util.defineNamespace('ne.component.m.Flicking', require('./src/js/flicking'));
