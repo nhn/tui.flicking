@@ -4,7 +4,7 @@
  */
 
 /**
- * @namespace ne.component.m.Flicking
+ * @constructor
  * @example
  * var flick = new ne.component.m.Flicking({
  *    element: document.getElementById('flick'), // element(mask element)
@@ -21,9 +21,8 @@
  *    duration: 300 // animation duration
  * });
  *
- *
  */
-var Flicking = ne.util.defineClass(/** @lends ne.component.m.Flicking.prototype */{
+var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
      * @type booleanㅡ
