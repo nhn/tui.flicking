@@ -6,7 +6,7 @@
 /**
  * @constructor
  * @example
- * var flick = new ne.component.m.Flicking({
+ * var flick = new tui.component.m.Flicking({
  *    element: document.getElementById('flick'), // element(mask element)
  *    wrapper: document.getElementById('flick-wrap1'), // warpper
  *    flow: 'horizontal', // direction ('horizontal|vertical)
@@ -22,7 +22,7 @@
  * });
  *
  */
-var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
+var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
      * @type booleanㅡ
@@ -92,9 +92,9 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
         this.itemClass = option.itemClass || this.itemClass;
         this.template = option.template || this.template;
         this.flow = option.flow || this.flow;
-        this.isMagnetic = ne.util.isExisty(option.isMagnetic) ? option.isMagnetic : this.isMagnetic;
-        this.isCircular = ne.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
-        this.isFixedHTML = ne.util.isExisty(option.isFixedHTML) ? option.isFixedHTML : this.isFixedHTML;
+        this.isMagnetic = tui.util.isExisty(option.isMagnetic) ? option.isMagnetic : this.isMagnetic;
+        this.isCircular = tui.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
+        this.isFixedHTML = tui.util.isExisty(option.isFixedHTML) ? option.isFixedHTML : this.isFixedHTML;
         this.effect = option.effect || this.effect;
         this.flickRange = option.flickRange || this.flickRange;
         this.duration = option.duration || this.duration;
@@ -148,15 +148,16 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
      */
     _initHelpers: function() {
         // MoveAnimator component
-        this.mover = new ne.component.Effect.Slide({
+        this.mover = new tui.component.Effects.Slide({
             flow: this.flow,
             element: this.wrapper,
             effect: this.effect,
             duration: this.duration
         });
         // MoveDetector component
-        this.movedetect = new ne.component.Gesture.Reader({
-            flickRange: this.flickRange
+        this.movedetect = new tui.component.Gesture.Reader({
+            flickRange: this.flickRange,
+            type: 'flick'
         });
     },
 
@@ -176,7 +177,7 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
      */
     _initElements: function() {
         this.elementCount = 0;
-        ne.util.forEachArray(this.wrapper.children, function(element) {
+        tui.util.forEachArray(this.wrapper.children, function(element) {
             if (element.nodeType === 1) {
                 element.style.width = this._config.width + 'px';
                 this.elementCount += 1;
@@ -189,9 +190,9 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _attachEvent: function() {
-        this.onTouchMove = ne.util.bind(this._onTouchMove, this);
-        this.onTouchEnd = ne.util.bind(this._onTouchEnd, this);
-        this.element.addEventListener('touchstart', ne.util.bind(this.onTouchStart, this));
+        this.onTouchMove = tui.util.bind(this._onTouchMove, this);
+        this.onTouchEnd = tui.util.bind(this._onTouchEnd, this);
+        this.element.addEventListener('touchstart', tui.util.bind(this.onTouchStart, this));
     },
 
     /**
@@ -369,7 +370,7 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
      */
     _setClone: function() {
         var count = 0;
-        this.clones = ne.util.filter(this.wrapper.children, function(element) {
+        this.clones = tui.util.filter(this.wrapper.children, function(element) {
             if (element.nodeType === 1) {
                 count += 1;
                 return true;
@@ -391,7 +392,7 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
             width = config.width * count,
             wrapper = this.wrapper;
 
-        if (!ne.util.isHTMLTag(wrapper.firstChild)) {
+        if (!tui.util.isHTMLTag(wrapper.firstChild)) {
             this.wrapper.removeChild(wrapper.firstChild);
         }
 
@@ -450,11 +451,12 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
                 this.startPos,
                 this.savePos
             ]
-        };
+        }, 
+        result;
 
-        ne.util.extend(evtList, info);
-        this.movedetect.extractType(evtList);
-        return this.movedetect.type === 'flick';
+        tui.util.extend(evtList, info);
+        result = this.movedetect.figure(evtList);
+        return result.isFlick;
     },
 
     /**
@@ -496,7 +498,7 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
         this.mover.action({
             direction: way,
             start: start,
-            complete: ne.util.bind(this._complete, this, pos, pos.cover)
+            complete: tui.util.bind(this._complete, this, pos, pos.cover)
         });
     },
 
@@ -532,7 +534,6 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _removeClones: function(pos) {
-        console.log(this.clones);
         var removeCount = this.clones.count,
             totalCount = removeCount * 2,
             leftCount = removeCount,
@@ -699,6 +700,6 @@ var Flicking = ne.util.defineClass(/** @lends Flicking.prototype */{
     }
 });
 
-ne.util.CustomEvents.mixin(Flicking);
+tui.util.CustomEvents.mixin(Flicking);
 
 module.exports = Flicking;
