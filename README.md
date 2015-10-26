@@ -19,8 +19,8 @@ This component support flicking effect by touch event page on Mobile enviroment.
 
 ## Dependency
 * ne-code-snippet: ~1.0.2
-* ne-component-effect-slide: ~1.0.0
-* ne-component-gesture-reader: ~1.0.0
+* tui-component-effect-slide: ~1.0.0
+* tui-component-gesture-reader: ~1.0.0
 
 ## Test environment
 * Mobile
@@ -32,8 +32,8 @@ This component support flicking effect by touch event page on Mobile enviroment.
 
 ## Download/Install
 * Bower:
-   * latest  : `bower install ne-component-m-flicking#master`
-   * each version : `bower install ne-component-m-flicking[#tag]`
+   * latest  : `bower install tui-component-m-flicking#master`
+   * each version : `bower install tui-component-m-flicking[#tag]`
 * Download: https://github.com/nhnent/tui.component.m-flicking
 
 ## History
