@@ -10,9 +10,9 @@ This component support flicking effect by touch event page on Mobile enviroment.
 * Support custom event
 
 ## Documentation
-* **API** : https://nhnent.github.io/fe.component-m-flicking/latest
-* **Tutorial** : https://github.com/nhnent/fe.component-m-flicking/wiki/Flicking-Tutorial
-* **Sample** - https://nhnent.github.io/fe.component-m-flicking/latest/tutorial-sample1.html
+* **API** : https://nhnent.github.io/tui.component.m-flicking/latest
+* **Tutorial** : https://github.com/nhnent/tui.component.m-flicking/wiki/Flicking-Tutorial
+* **Sample** - https://nhnent.github.io/tui.component.m-flicking/latest/tutorial-sample1.html
 
 
 
@@ -34,12 +34,13 @@ This component support flicking effect by touch event page on Mobile enviroment.
 * Bower:
    * latest  : `bower install ne-component-m-flicking#master`
    * each version : `bower install ne-component-m-flicking[#tag]`
-* Download: https://github.com/nhnent/fe.component-m-flicking
+* Download: https://github.com/nhnent/tui.component.m-flicking
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="https://github.nhnent.com/pages/fe/component-m-flicking/1.0.0">1.0.0</a> | Realease | 2015.05 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
+| 1.0.0 | Namespace chagned | 2015.10 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
+| <a href="https://github.nhnent.com/pages/tui.component.m-flicking/1.0.0">1.0.0</a> | Realease | 2015.05 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 
 ## LICENSE
 [MIT LICENSE](LICENSE)
