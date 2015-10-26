@@ -2,10 +2,9 @@
   "name": "component-m-flicking",
   "version": "1.0.0",
   "authors": [
-    "이제인 <jein.yi@nhnent.com>"
+    "NHN Ent. FE Dev team.<dl_javascript@nhnent.com>"
   ],
   "license": "MIT",
-	"private" : true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -23,8 +22,8 @@
     "samples"
   ],
   "dependencies": {
-    "ne-code-snippet" : "~1.0.2",
-	"ne-component-effect-slide" : "~1.0.0",
-	"ne-component-gesture-reader" : "~1.0.0"
+    "tui-code-snippet" : "~1.0.2",
+	"tui-component-effect-slide" : "~1.0.0",
+	"tui-component-gesture-reader" : "~1.0.0"
   }
 }
