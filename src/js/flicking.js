@@ -25,7 +25,7 @@
 var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     /**
      * whether magnetic use(Defalut true)
-     * @type booleanㅡ
+     * @type {boolean}
      */
     isMagnetic: true,
     /**
@@ -68,22 +68,6 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     /*************
      * initialize methods
      *************/
-
-    /**
-     * initialize
-     * @param option
-     *      @param option.element mask element(root element)
-     *      @param option.wrapper wrapper element
-     *      @param [option.flow='horizontal'] direction('horizontal|vertical')
-     *      @param [option.isMaginetic=true] use magnetic
-     *      @param [option.isCircular=true] circular
-     *      @param [option.isFixedHTML=true] fixed HTML
-     *      @param [option.itemClass='item'] item(panel) class
-     *      @param [option.data=false] html data(isFixedHTML == false fixed HTML)
-     *      @param [option.flickRange=50] flickRange(criteria to cognize)
-     *      @param [option.effect='linear'] effecrt
-     *      @param [option.duration=100] animation duration
-     */
     init: function(option) {
         // options
         this.element = option.element;
@@ -232,6 +216,19 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
             return;
         }
 
+        /**
+         * @api
+         * @event Flicking#beforeMove
+         * @type {Flicking}
+         * @example
+         * flick.on('beforeMove', function() {
+         *     var left = getData('left');
+         *     var right = getData('right');
+         *     flick.setPrev(left);
+         *     flick.setNext(right);
+         *     document.getElementById('move').innerHTML = 'beforeMove';
+         * });
+         */
         this.fire('beforeMove', this);
 
         if (this.isFixedHTML && this.isCircular) {
@@ -344,6 +341,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Set prev panel
+     * @api
      * @param {string} data A data of flicking
      */
     setPrev: function(data) {
@@ -356,6 +354,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Set next panel
+     * @api
      * @param {string} data  A data of flicking
      */
     setNext: function(data) {
@@ -447,12 +446,12 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _isFlick: function(info) {
         var evtList = {
-            list: [
-                this.startPos,
-                this.savePos
-            ]
-        }, 
-        result;
+                list: [
+                    this.startPos,
+                    this.savePos
+                ]
+            },
+            result;
 
         tui.util.extend(evtList, info);
         result = this.movedetect.figure(evtList);
@@ -512,8 +511,35 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _complete: function(pos, customFire) {
         if (customFire) {
+            /**
+             * @api
+             * @event Flicking#afterFlick
+             * @type {object}
+             * @property {number} dest - Destination value
+             * @property {number} dist - Distance value
+             * @property {boolean} cover
+             * @property {string} way - "backward", "forward"
+             * @example
+             * flick.on('afterFlick', function(data) {
+             *     console.log(data.way);
+             * });
+             */
             this.fire('afterFlick', pos);
         } else {
+            /**
+             * @api
+             * @event Flicking#returnFlick
+             * @type {object}
+             * @property {number} dest - Destination value
+             * @property {number} dist - Distance value
+             * @property {boolean} cover
+             * @property {boolean} recover
+             * @property {string} way - "backward", "forward"
+             * @example
+             * flick.on('returnFlick', function(data) {
+             *     console.log(data.way);
+             * });
+             */
             this.fire('returnFlick', pos);
         }
 

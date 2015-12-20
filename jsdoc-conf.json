@@ -38,8 +38,8 @@
   },
   "opts": {
     "recurse": true,
-    "private": true,
     "destination": "doc",
+    "name": "Mobile - Flicking",
     "tutorials": "samples"
   }
 }
