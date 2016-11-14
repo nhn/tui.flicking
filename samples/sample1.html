@@ -3,19 +3,14 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-    <title></title>
-
-    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
-    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
-
+    <title>Sample 1</title>
     <style>
         .item {float:left; height:100%;}
     </style>
 </head>
 <body>
-
-<div class="wrap">
+<h3> Run on mobile-rendering (to use touch events) </h3>
+<div class="code-html">
     <div id="flick" class="flick" style="position:relative; width:100%;height:300px;background-color:#aaa;overflow:hidden">
         <div id="flick-wrap1" class="panelwrap" style="background-color:#cd0342;position: absolute;height:300px;">
             <div class="item">item1</div>
@@ -28,18 +23,11 @@
     </div>
 </div>
 
-<div class="codeArea"></div>
-
-<script type="text/javascript" src="js/code-snippet.js"></script>
-<script type="text/javascript" src="js/effects.js"></script>
-<script type="text/javascript" src="js/gesture-reader.js"></script>
-<script type="text/javascript" src="js/flicking.js"></script>
-
-<script src="../scripts/jquery.js"></script>
-<script src="../scripts/prettify/prettify.js"></script>
-<script src="../scripts/prettify/lang-css.js"></script>
-<script src="../scripts/samplecode.js"></script>
-<script type="text/javascript" class="serviceCode">
+<script type="text/javascript" src="//cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
+<script type="text/javascript" src="//cdn.rawgit.com/nhnent/tui.component.effects/1.1.1/dist/tui-component-effects.js"></script>
+<script type="text/javascript" src="//cdn.rawgit.com/nhnent/tui.component.gesture-reader/1.1.0%2B20161105/dist/gesture-reader.js"></script>
+<script type="text/javascript" src="../dist/tui-component-m-flicking.js"></script>
+<script type="text/javascript" class="code-js">
     new tui.component.m.Flicking({
         element: document.getElementById('flick'),
         wrapper: document.getElementById('flick-wrap1'),

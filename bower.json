@@ -1,8 +1,7 @@
 {
-  "name": "component-m-flicking",
-  "version": "1.0.0",
+  "name": "tui-component-m-flicking",
   "authors": [
-    "NHN Ent. FE Dev team.<dl_javascript@nhnent.com>"
+    "NHN Ent. FE Dev Lab <dl_javascript@nhnent.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -22,8 +21,11 @@
     "samples"
   ],
   "dependencies": {
-    "tui-code-snippet" : "~1.0.2",
-	"tui-component-effect-slide" : "~1.0.0",
-	"tui-component-gesture-reader" : "~1.0.0"
+    "tui-component-effects": "^1.1.0",
+    "tui-component-gesture-reader": "^1.1.0",
+    "tui-code-snippet": "^1.1.0"
+  },
+  "resolutions": {
+    "tui-code-snippet": ">=1.1 <2.0"
   }
 }

@@ -176,7 +176,8 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     _attachEvent: function() {
         this.onTouchMove = tui.util.bind(this._onTouchMove, this);
         this.onTouchEnd = tui.util.bind(this._onTouchEnd, this);
-        this.element.addEventListener('touchstart', tui.util.bind(this.onTouchStart, this));
+        this.onTouchStart = tui.util.bind(this._onTouchStart, this);
+        this.element.addEventListener('touchstart', this.onTouchStart);
     },
 
     /**
@@ -210,8 +211,9 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     /**
      * Handle to touch start event
      * @param {object} e touchstart event
+     * @private
      */
-    onTouchStart: function(e) {
+    _onTouchStart: function(e) {
         if (this.isLocked) {
             return;
         }
@@ -341,25 +343,23 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Set prev panel
-     * @api
      * @param {string} data A data of flicking
      */
     setPrev: function(data) {
         var config = this._config;
         var element = this._getElement(data);
-        this.expandMovePanel();
+        this._expandMovePanel();
         this.wrapper.style[config.way] = this._getElementPos() - config.width + 'px';
         this.wrapper.insertBefore(element, this.wrapper.firstChild);
     },
 
     /**
      * Set next panel
-     * @api
      * @param {string} data  A data of flicking
      */
     setNext: function(data) {
         var element = this._getElement(data);
-        this.expandMovePanel();
+        this._expandMovePanel();
         this.wrapper.appendChild(element);
     },
 
@@ -423,15 +423,17 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Expand wrapper's width | height
+     * @private
      */
-    expandMovePanel: function() {
+    _expandMovePanel: function() {
         this.wrapper.style[this._config.dimension] = this._getWidth() + this._config.width + 'px';
     },
 
     /**
      * Reduce wrapper's width | height
+     * @private
      */
-    reduceMovePanel: function() {
+    _reduceMovePanel: function() {
         this.wrapper.style[this._config.dimension] = this._getWidth() - this._config.width + 'px';
     },
 
@@ -512,7 +514,6 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
     _complete: function(pos, customFire) {
         if (customFire) {
             /**
-             * @api
              * @event Flicking#afterFlick
              * @type {object}
              * @property {number} dest - Destination value
@@ -527,7 +528,6 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
             this.fire('afterFlick', pos);
         } else {
             /**
-             * @api
              * @event Flicking#returnFlick
              * @type {object}
              * @property {number} dest - Destination value
@@ -672,9 +672,9 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _getMoved: function() {
         var from = (this.flow === 'horizontal') ? this.startPos.x : this.startPos.y,
-            to = (this.flow === 'horizontal') ? this.savePos.x : this.savePos.y,
-            moved = to - from;
-        return moved;
+            to = (this.flow === 'horizontal') ? this.savePos.x : this.savePos.y;
+
+        return to - from;
     },
 
     /**
