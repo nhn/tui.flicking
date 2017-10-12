@@ -3,85 +3,130 @@
  * @author NHN Ent. FE dev team <dl_javascript@nhnent.com>
  */
 
+'use strict';
+
+var GestureReader = require('tui-gesture-reader');
+var animation = require('tui-animation');
+var snippet = require('tui-code-snippet');
+
 /**
- * @constructor
+ * @class Flicking
+ * @param {obejct} options
+ *     @param {HTMLElement} options.element - Container element
+ *     @param {HTMLElement} options.wrapper - Wrapper element that include flicking items
+ *     @param {string} [options.flow] - Type of flicking ('horizontal'|'vertical')
+ *     @param {boolean} [options.circular] - Whether use circular flicking or not
+ *     @param {boolean} [options.useMagnetic] - Whether magnetic use or not
+ *     @param {string} [options.effect] - Type of [animation]{@link https://github.com/nhnent/tui.animation}
+ *     @param {number} [options.flickRange] - Minimum range of flicking
+ *     @param {number} [options.duration] - Duration for animation
+ *     @param {string} [options.itemClass='panel'] - Class name of each item element
+ *     @param {string} [options.itemTag='div'] - Node type of each item element
+ *     @param {string} [options.data] - Set first item when items are created using custom event and public APIs
  * @example
- * var flick = new tui.component.m.Flicking({
- *    element: document.getElementById('flick'), // element(mask element)
- *    wrapper: document.getElementById('flick-wrap1'), // warpper
- *    flow: 'horizontal', // direction ('horizontal|vertical)
- *    isMagnetic: true, // use magnetic
- *    isCircular: true, // circular
- *    isFixedHTML: false, // fixed HTML
- *    itemClass: 'item', // item(panel) class
- *    data: '<strong style="color:white;display:block;text-align:center;margin-top:100px">item</strong>', // item innerHTML
- *    select: 1, // select
- *    flickRange: 100, // flickRange(Criteria to cognize)
- *    effect: 'linear', // effect(default linear)
- *    duration: 300 // animation duration
+ * var Flicking = tui.Flicking; // or require('tui-flicking');
+ * var instance = new Flicking({
+ *      element: document.getElementById('flick'),
+ *      wrapper: document.getElementById('flick-panels'),
+ *      flow: 'horizontal',
+ *      circular: true,
+ *      useMagnetic: true,
+ *      effect: 'linear',
+ *      flickRange: 100,
+ *      duration: 300,
+ *      itemClass: 'panel',
+ *      itemTag: 'div',
+ *      data: '<strong class="contents">panel</strong>'
  * });
  *
  */
-var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
+var Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
     /**
-     * whether magnetic use(Defalut true)
+     * Whether magnetic use or not
      * @type {boolean}
+     * @private
      */
-    isMagnetic: true,
+    useMagnetic: true,
+
     /**
      * Template of panel item
+     * @type {string}
+     * @private
+     * @todo Should implement to use template option
      */
     template: '<div>{{data}}</div>',
+
     /**
      * A class name of flicking panel item
+     * @type {string}
+     * @private
      */
     itemClass: 'panel',
+
     /**
      * Flicking panel item html tag
+     * @type {string}
+     * @private
      */
     itemTag: 'div',
+
     /**
      * The flow of flicking(horizontal|vertical)
+     * @type {string}
+     * @private
      */
     flow: 'horizontal',
+
     /**
      * The roop flicking
+     * @type {boolean}
+     * @private
      */
-    isCircular: true,
+    circular: true,
+
     /**
      * Whether model use or not
+     * @type {boolean}
+     * @private
      */
-    isFixedHTML: true,
+    useFixedHTML: true,
+
     /**
-     * The distance that to be determined to flicking.
+     * The distance that to be determined to flicking
+     * @type {number}
+     * @private
      */
     flickRange: 50,
+
     /**
      * A effect of flicking
+     * @type {string}
+     * @private
      */
     effect: 'linear',
+
     /**
      * A duration of flicking
+     * @type {number}
+     * @private
      */
     duration: 100,
 
-    /*************
-     * initialize methods
-     *************/
-    init: function(option) {
+    /* eslint-disable complexity */
+    init: function(options) {
         // options
-        this.element = option.element;
-        this.wrapper = option.wrapper;
-        this.itemTag = option.itemTag || this.itemTag;
-        this.itemClass = option.itemClass || this.itemClass;
-        this.template = option.template || this.template;
-        this.flow = option.flow || this.flow;
-        this.isMagnetic = tui.util.isExisty(option.isMagnetic) ? option.isMagnetic : this.isMagnetic;
-        this.isCircular = tui.util.isExisty(option.isCircular) ? option.isCircular : this.isCircular;
-        this.isFixedHTML = tui.util.isExisty(option.isFixedHTML) ? option.isFixedHTML : this.isFixedHTML;
-        this.effect = option.effect || this.effect;
-        this.flickRange = option.flickRange || this.flickRange;
-        this.duration = option.duration || this.duration;
+        this.element = options.element;
+        this.wrapper = options.wrapper;
+        this.itemTag = options.itemTag || this.itemTag;
+        this.itemClass = options.itemClass || this.itemClass;
+        this.template = options.template || this.template;
+        this.flow = options.flow || this.flow;
+        this.useMagnetic = snippet.isExisty(options.useMagnetic) ? options.useMagnetic : this.useMagnetic;
+        this.circular = snippet.isExisty(options.circular) ? options.circular : this.circular;
+        this.useFixedHTML = snippet.isExisty(options.data) ? false : this.useFixedHTML;
+        this.effect = options.effect || this.effect;
+        this.flickRange = options.flickRange || this.flickRange;
+        this.duration = options.duration || this.duration;
 
         // to figure position to move
         this.startPos = {};
@@ -90,8 +135,8 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
         // data is set by direction or flow
         this._setConfig();
 
-        if (!this.isFixedHTML) {
-            this._makeItems(option.data || '');
+        if (!this.useFixedHTML) {
+            this._makeItems(options.data || '');
         }
 
         // init helper for MoveAnimator, movedetector
@@ -100,6 +145,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
         this._initWrap();
         this._attachEvent();
     },
+    /* eslint-enable complexity */
 
     /**
      * Set configurations
@@ -107,9 +153,10 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _setConfig: function() {
         var isVertical = (this.flow === 'vertical');
+
         if (isVertical) {
             this._config = {
-                direction: ['N','S'],
+                direction: ['N', 'S'],
                 way: 'top',
                 dimension: 'height',
                 point: 'y',
@@ -117,7 +164,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
             };
         } else {
             this._config = {
-                direction: ['W','E'],
+                direction: ['W', 'E'],
                 way: 'left',
                 dimension: 'width',
                 point: 'x',
@@ -131,28 +178,22 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _initHelpers: function() {
-        // MoveAnimator component
-        this.mover = new tui.component.Effects.Slide({
-            flow: this.flow,
-            element: this.wrapper,
-            effect: this.effect,
-            duration: this.duration
-        });
         // MoveDetector component
-        this.movedetect = new tui.component.Gesture.Reader({
+        this.movedetect = new GestureReader({
             flickRange: this.flickRange,
             type: 'flick'
         });
     },
 
     /**
-     * Initialize wrapper element.
+     * Initialize wrapper element
      * @private
      */
     _initWrap: function() {
         var config = this._config;
+
         this.wrapper.style[config.way] = '0px';
-        this.wrapper.style[config.dimension] = config.width * this.elementCount + 'px';
+        this.wrapper.style[config.dimension] = (config.width * this.elementCount) + 'px';
     },
 
     /**
@@ -160,10 +201,13 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _initElements: function() {
+        var config = this._config;
+
         this.elementCount = 0;
-        tui.util.forEachArray(this.wrapper.children, function(element) {
+
+        snippet.forEachArray(this.wrapper.children, function(element) {
             if (element.nodeType === 1) {
-                element.style.width = this._config.width + 'px';
+                element.style[config.dimension] = config.width + 'px';
                 this.elementCount += 1;
             }
         }, this);
@@ -174,33 +218,36 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _attachEvent: function() {
-        this.onTouchMove = tui.util.bind(this._onTouchMove, this);
-        this.onTouchEnd = tui.util.bind(this._onTouchEnd, this);
-        this.onTouchStart = tui.util.bind(this._onTouchStart, this);
+        this.onTouchMove = snippet.bind(this._onTouchMove, this);
+        this.onTouchEnd = snippet.bind(this._onTouchEnd, this);
+        this.onTouchStart = snippet.bind(this._onTouchStart, this);
+
         this.element.addEventListener('touchstart', this.onTouchStart);
     },
 
     /**
      * Create elements, if panel html is not fixed.
-     * @param {object} data 입력된 데이터 정보
+     * @param {string} data - String to create element
      * @private
      */
     _makeItems: function(data) {
-        var item = this._getElement(data);
-        this.wrapper.appendChild(item);
+        var element = this._getElement(data);
+        this.wrapper.appendChild(element);
     },
 
     /**
      * Make element and return
-     * @param {object} data html 데이터
-     * @returns {Element}
+     * @param {string} data - String to create element
+     * @returns {HTMLElement}
      * @private
      */
     _getElement: function(data) {
         var item = document.createElement(this.itemTag);
+
         item.className = this.itemClass;
         item.innerHTML = data;
         item.style[this._config.dimension] = this._config.width + 'px';
+
         return item;
     },
 
@@ -210,7 +257,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Handle to touch start event
-     * @param {object} e touchstart event
+     * @param {object} e - touchstart event
      * @private
      */
     _onTouchStart: function(e) {
@@ -219,21 +266,21 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
         }
 
         /**
-         * @api
          * @event Flicking#beforeMove
-         * @type {Flicking}
          * @example
-         * flick.on('beforeMove', function() {
+         * instance.on('beforeMove', function() {
          *     var left = getData('left');
          *     var right = getData('right');
-         *     flick.setPrev(left);
-         *     flick.setNext(right);
+         *
+         *     instance.setPrev(left);
+         *     instance.setNext(right);
+         *
          *     document.getElementById('move').innerHTML = 'beforeMove';
          * });
          */
         this.fire('beforeMove', this);
 
-        if (this.isFixedHTML && this.isCircular) {
+        if (this.useFixedHTML && this.circular) {
             this._prepareMoveElement();
         }
 
@@ -246,16 +293,15 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Handle to touch move event
-     * @param {event} e touchmove event
+     * @param {object} e - touchmove event
      * @private
      */
     _onTouchMove: function(e) {
-        var pos = this.startPos,
-            movement,
-            start,
-            end;
+        var pos = this.startPos;
+        var movement, start, end;
 
         e.preventDefault();
+
         this.savePos.x = e.touches[0].clientX;
         this.savePos.y = e.touches[0].clientY;
 
@@ -279,17 +325,17 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
         var point = this._config.point;
         if (this.startPos[point] === this.savePos[point]) {
             this._resetMoveElement();
-        } else if (this.isMagnetic) {
+        } else if (this.useMagnetic) {
             this._activeMagnetic();
         }
 
-        document.removeEventListener('touchMove', this.onTouchMove);
-        document.removeEventListener('touchEnd', this.onTouchEnd);
+        document.removeEventListener('touchmove', this.onTouchMove);
+        document.removeEventListener('touchend', this.onTouchEnd);
     },
 
     /**
      * Save touch position
-     * @param {object} point 터치 이벤트 좌표
+     * @param {object} point - Position info of touch event
      * @private
      */
     _saveTouchStartData: function(point) {
@@ -319,12 +365,14 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _resetMoveElement: function() {
         var none = 'none';
-        if (!this.isFixedHTML) {
-            this._removePadding({ way: none });
-        } else {
-            if (this.isCircular) {
-                this._removeClones({ way: none });
-            }
+        if (!this.useFixedHTML) {
+            this._removePadding({
+                way: none
+            });
+        } else if (this.circular) {
+            this._removeClones({
+                way: none
+            });
         }
     },
 
@@ -343,7 +391,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Set prev panel
-     * @param {string} data A data of flicking
+     * @param {string} data - A data of flicking
      */
     setPrev: function(data) {
         var config = this._config;
@@ -355,7 +403,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Set next panel
-     * @param {string} data  A data of flicking
+     * @param {string} data - A data of flicking
      */
     setNext: function(data) {
         var element = this._getElement(data);
@@ -369,11 +417,15 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _setClone: function() {
         var count = 0;
-        this.clones = tui.util.filter(this.wrapper.children, function(element) {
+
+        this.clones = snippet.filter(this.wrapper.children, function(element) {
             if (element.nodeType === 1) {
                 count += 1;
+
                 return true;
             }
+
+            return false;
         });
         this.clones.count = count;
     },
@@ -383,19 +435,18 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _setPrev: function() {
-        // clone
-        var i = 1,
-            clones = this.clones,
-            count = clones.count,
-            config = this._config,
-            width = config.width * count,
-            wrapper = this.wrapper;
+        var i = 1;
+        var clones = this.clones;
+        var count = clones.count;
+        var config = this._config;
+        var width = config.width * count;
+        var wrapper = this.wrapper;
 
-        if (!tui.util.isHTMLTag(wrapper.firstChild)) {
+        if (!snippet.isHTMLTag(wrapper.firstChild)) {
             this.wrapper.removeChild(wrapper.firstChild);
         }
 
-        for (; i <= count; i++) {
+        for (; i <= count; i += 1) {
             wrapper.insertBefore(clones[count - i].cloneNode(true), wrapper.firstChild);
         }
 
@@ -408,13 +459,14 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _setNext: function() {
-        var clones = this.clones,
-            count = clones.count,
-            config = this._config,
-            width = config.width * count,
-            wrapper = this.wrapper,
-            i = 0;
-        for (; i < count; i++) {
+        var clones = this.clones;
+        var count = clones.count;
+        var config = this._config;
+        var width = config.width * count;
+        var wrapper = this.wrapper;
+        var i = 0;
+
+        for (; i < count; i += 1) {
             wrapper.appendChild(clones[i].cloneNode(true));
         }
 
@@ -443,33 +495,35 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Check whether flicking or not
-     * @param info
+     * @param {object} info - Position info
+     * @returns {boolean}
      * @private
      */
     _isFlick: function(info) {
         var evtList = {
-                list: [
-                    this.startPos,
-                    this.savePos
-                ]
-            },
-            result;
+            list: [
+                this.startPos,
+                this.savePos
+            ]
+        };
+        var result;
 
-        tui.util.extend(evtList, info);
+        snippet.extend(evtList, info);
         result = this.movedetect.figure(evtList);
+
         return result.isFlick;
     },
 
     /**
      * Fix element pos, if flicking use magnetic
-     * @param {object} info information for fix element pos.
+     * @param {object} info - Information for fix element pos.
      * @private
      */
     _fixInto: function(info) {
-        var isBackward = this._isBackward(),
-            isFlick = this._isFlick(info),
-            origin = this.startPos[this._config.way],
-            pos;
+        var isBackward = this._isBackward();
+        var isFlick = this._isFlick(info);
+        var origin = this.startPos[this._config.way];
+        var pos;
 
         if (!isFlick || this._isEdge(info)) {
             isBackward = !isBackward;
@@ -489,18 +543,35 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      * @private
      */
     _moveTo: function(pos, isBackward) {
-        var way = isBackward ? 'backward' : 'forward',
-            origin = this.startPos[this._config.way],
-            moved = this._getMoved(),
-            start = origin + moved;
+        var way = isBackward ? 'backward' : 'forward';
+        var origin = this.startPos[this._config.way];
+        var moved = this._getMoved();
+        var start = origin + moved;
+        var direction = way === 'forward' ? 1 : -1;
+        var horizontal = this.flow === 'horizontal';
+        var config = this._config;
+        var self = this;
+        var originValue;
+
         pos.way = way;
 
-        this.mover.setDistance(pos.dist);
-        this.mover.action({
-            direction: way,
-            start: start,
-            complete: tui.util.bind(this._complete, this, pos, pos.cover)
+        if (this.mover) {
+            this.mover.cancel();
+        }
+
+        this.mover = animation.anim({
+            from: horizontal ? start : [0, start],
+            to: horizontal ? start + pos.dist : [0, start + pos.dist],
+            duration: this.duration,
+            easing: this.effect,
+            frame: function(left, top) {
+                originValue = (horizontal ? left : top) - start;
+                self.wrapper.style[config.way] = (originValue * direction) + start + 'px';
+            },
+            complete: snippet.bind(this._complete, this, pos, pos.cover)
         });
+
+        this.mover.run();
     },
 
     /*************
@@ -509,35 +580,37 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Callback for move after, this method fire custom events
+     * @param {object} pos - Position information
+     * @param {boolean} customFire - Whether the custom event is fired or not
      * @private
      */
     _complete: function(pos, customFire) {
         if (customFire) {
             /**
              * @event Flicking#afterFlick
-             * @type {object}
-             * @property {number} dest - Destination value
-             * @property {number} dist - Distance value
-             * @property {boolean} cover
-             * @property {string} way - "backward", "forward"
+             * @param {object} ev
+             *     @param {number} ev.dest - Destination value
+             *     @param {number} ev.dist - Distance value
+             *     @param {string} ev.way - "backward", "forward"
+             *     @param {boolean} ev.cover - Cover state
              * @example
-             * flick.on('afterFlick', function(data) {
-             *     console.log(data.way);
+             * instance.on('afterFlick', function(ev) {
+             *     console.log(ev.way);
              * });
              */
             this.fire('afterFlick', pos);
         } else {
             /**
              * @event Flicking#returnFlick
-             * @type {object}
-             * @property {number} dest - Destination value
-             * @property {number} dist - Distance value
-             * @property {boolean} cover
-             * @property {boolean} recover
-             * @property {string} way - "backward", "forward"
+             * @param {object} ev
+             *     @param {number} ev.dest - Destination value
+             *     @param {number} ev.dist - Distance value
+             *     @param {string} ev.way - "backward", "forward"
+             *     @param {boolean} ev.cover - Cover state
+             *     @param {boolean} ev.recover - Recover state
              * @example
-             * flick.on('returnFlick', function(data) {
-             *     console.log(data.way);
+             * instance.on('returnFlick', function(ev) {
+             *     console.log(ev.way);
              * });
              */
             this.fire('returnFlick', pos);
@@ -546,26 +619,25 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
         this.isLocked = false;
         this.wrapper.style[this._config.way] = pos.dest + 'px';
 
-        if (!this.isFixedHTML) {
+        if (!this.useFixedHTML) {
             this._removePadding(pos);
-        } else {
-            if (this.isCircular) {
-                this._removeClones(pos);
-            }
+        } else if (this.circular) {
+            this._removeClones(pos);
         }
     },
 
     /**
      * Remove clones for static circular
+     * @param {object} pos - Position information
      * @private
      */
     _removeClones: function(pos) {
-        var removeCount = this.clones.count,
-            totalCount = removeCount * 2,
-            leftCount = removeCount,
-            rightCount,
-            config = this._config,
-            way = pos.recover ? 'none' : pos.way;
+        var config = this._config;
+        var way = pos.recover ? 'none' : pos.way;
+        var removeCount = this.clones.count;
+        var totalCount = removeCount * 2;
+        var leftCount = removeCount;
+        var rightCount;
 
         if (way === 'forward') {
             leftCount = removeCount + 1;
@@ -576,20 +648,22 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
         this._removeCloneElement(leftCount, 'firstChild');
         this._removeCloneElement(rightCount, 'lastChild');
-        this.wrapper.style[config.dimension] = this._getWidth() - config.width * totalCount + 'px';
+
+        this.wrapper.style[config.dimension] = this._getWidth() - (config.width * totalCount) + 'px';
         this.wrapper.style[config.way] = 0;
     },
 
     /**
      * Remove clone elements
-     * @param {number} count clone element count
-     * @param {string} type key target node(firstChild|lastChild)
+     * @param {number} count - Clone element count
+     * @param {string} type - Key target node(firstChild|lastChild)
      * @private
      */
     _removeCloneElement: function(count, type) {
-        var i = 0,
-            wrapper = this.wrapper;
-        for (; i < count; i++) {
+        var wrapper = this.wrapper;
+        var i = 0;
+
+        for (; i < count; i += 1) {
             if (wrapper[type].nodeType !== 1) {
                 wrapper.removeChild(wrapper[type]);
                 i -= 1;
@@ -601,16 +675,16 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Remove padding used for drag
-     * @param pos
+     * @param {object} pos - Position information
      * @private
      */
     _removePadding: function(pos) {
-        var children = this.wrapper.getElementsByTagName(this.itemTag),
-            pre = children[0],
-            forth = children[children.length -1],
-            config = this._config,
-            way = pos.recover ? 'none' : pos.way,
-            wrapper = this.wrapper;
+        var children = this.wrapper.getElementsByTagName(this.itemTag);
+        var pre = children[0];
+        var forth = children[children.length - 1];
+        var config = this._config;
+        var way = pos.recover ? 'none' : pos.way;
+        var wrapper = this.wrapper;
 
         if (way === 'forward') {
             forth = children[1];
@@ -630,7 +704,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Get return distance and destination
-     * @param {boolean} isBackward 역행여부
+     * @param {boolean} isBackward - Whether the direction is backward or not
      * @returns {{dest: *, dist: *}}
      * @private
      */
@@ -639,21 +713,23 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
         return {
             dest: this.startPos[this._config.way],
-            dist : isBackward ? moved : -moved,
+            dist: isBackward ? moved : -moved,
             cover: false
-        }
+        };
     },
 
     /**
      * Get cover distance and destination
-     * @param {boolean} isBackward 역행 여부
-     * @param {number} origin 원래 이동 너비
+     * @param {boolean} isBackward - Whether the direction is backward or not
+     * @param {number} origin - Original moved range
      * @returns {{dest: *, dist:*}}
      * @private
      */
     _getCoverPos: function(isBackward, origin) {
-        var moved = this._getMoved(),
-            pos = { cover: true };
+        var moved = this._getMoved();
+        var pos = {
+            cover: true
+        };
 
         if (isBackward) {
             pos.dist = -this._config.width + moved;
@@ -662,6 +738,7 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
             pos.dist = -this._config.width - moved;
             pos.dest = origin - this._config.width;
         }
+
         return pos;
     },
 
@@ -679,16 +756,19 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Check whether edge or not(but circular)
+     * @returns {boolean}
      * @private
      */
     _isEdge: function() {
-        if (this.isCircular) {
+        var isNext, current, width;
+
+        if (this.circular) {
             return false;
         }
 
-        var isNext = !this._isBackward(),
-            current = this._getElementPos(),
-            width = this._getWidth();
+        isNext = !this._isBackward();
+        current = this._getElementPos();
+        width = this._getWidth();
 
         if (isNext && (current <= -width + this._config.width)) {
             return true;
@@ -722,10 +802,11 @@ var Flicking = tui.util.defineClass(/** @lends Flicking.prototype */{
      */
     _isBackward: function() {
         var direction = this.movedetect.getDirection([this.savePos, this.startPos]);
+
         return direction === this._config.direction[0];
     }
 });
 
-tui.util.CustomEvents.mixin(Flicking);
+snippet.CustomEvents.mixin(Flicking);
 
 module.exports = Flicking;

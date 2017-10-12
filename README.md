@@ -1,36 +1,74 @@
-Mobile Flicking
+Flicking
 ===============
-Flicking Component<br>
-This component supports flicking effect on mobile touch events.
+This component supports flicking effect on mobile touch events
 
 ## Feature
 * Mobile vertical/horizontal swipe
-* Support circular/incircular flicking
+* Support circular/non-circular flicking
 * Load next data when touch start to flick
 * Custom events
 
 ## Documentation
-* **API** : https://nhnent.github.io/tui.component.m-flicking/latest
-* **Tutorial** : https://github.com/nhnent/tui.component.m-flicking/wiki/Flicking-Tutorial
-* **Sample** - https://nhnent.github.io/tui.component.m-flicking/latest/tutorial-sample1.html
+* **API** : [https://nhnent.github.io/tui.flicking/latest](https://nhnent.github.io/tui.flicking/latest)
+* **Tutorial** : [https://github.com/nhnent/tui.flicking/wiki](https://github.com/nhnent/tui.flicking/wiki)
+* **Example** :
+[https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic.html)
 
 ## Dependency
-* tui-code-snippet: ^1.1.0
-* tui-component-effects: ^1.1.0
-* tui-component-gesture-reader: ^1.1.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
+* [tui-animation](https://github.com/nhnent/tui.animation) >=1.0.0
+* [tui-gesture-reader](https://github.com/nhnent/tui.gesture-reader) >=2.0.0
 
-## Test environment
-* Mobile
-	* Galaxy Note I(Android 2.3), II(Android 4.1)
-	* Galaxy S III(Android 4.0), IV(Android 4.2.2)
-	* iPhone 5S(iOS 8)
-	* Chrome Emulator
+## Test Environment
+### Mobile
+* Android 4.2.x
+* iOS 10.3.x
+* Chrome Emulator
 
-## Download/Install
-* Bower:
-   * latest  : `bower install tui-component-m-flicking`
-   * each version : `bower install tui-component-m-flicking[#tag]`
-* Download: https://github.com/nhnent/tui.component.m-flicking
+## Usage
+### Use `npm`
 
-## LICENSE
-[MIT LICENSE](LICENSE)
+Install the latest version using `npm` command:
+
+```
+$ npm install tui-flicking --save
+```
+
+or want to install the each version:
+
+```
+$ npm install tui-flicking@<version> --save
+```
+
+To access as module format in your code:
+
+```javascript
+var Flicking = require('tui-flicking');
+var instance = new Flicking(...);
+```
+
+### Use `bower`
+Install the latest version using `bower` command:
+
+```
+$ bower install tui-flicking
+```
+
+or want to install the each version:
+
+```
+$ bower install tui-flicking#<tag>
+```
+
+To access as namespace format in your code:
+
+```javascript
+var instance = new tui.Flicking(...);
+```
+
+### Download
+* [Download bundle files from `dist` folder](https://github.com/nhnent/tui.flicking/tree/production/dist)
+* [Download all sources for each version](https://github.com/nhnent/tui.flicking/releases)
+
+## License
+[MIT LICENSE](https://github.com/nhnent/tui.flicking/blob/master/LICENSE)
