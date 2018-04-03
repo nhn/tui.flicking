@@ -14,6 +14,7 @@
 * [Examples](#-examples)
 * [Install](#-install)
     * [Via Package Manager](#via-package-manager)
+    * [Via Contents Delivery Network (CDN)](#via-contents-delivery-network-cdn)
     * [Download Source Files](#download-source-files)
 * [Usage](#-usage)
     * [HTML](#html)
@@ -63,6 +64,28 @@ $ npm install --save tui-flicking@<version> # Specific version
 ``` sh
 $ bower install tui-flicking # Latest version
 $ bower install tui-flicking#<tag> # Specific version
+```
+
+### Via Contents Delivery Network (CDN)
+TOAST UI products are available over the CDN powered by [TOAST Cloud](https://www.toast.com).
+
+You can use the CDN as below.
+
+```html
+<script src="https://uicdn.toast.com/tui.flicking/latest/tui-flicking.js"></script>
+```
+
+If you want to use a specific version, use the tag name instead of `latest` in the url's path.
+
+The CDN directory has the following structure.
+
+```
+tui.flicking/
+├─ latest/
+│  ├─ tui-flicking.js
+│  └─ tui-flicking.min.js
+├─ v2.1.0/
+│  ├─ ...
 ```
 
 ### Download Source Files
