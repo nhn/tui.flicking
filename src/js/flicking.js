@@ -40,8 +40,8 @@ function sendHostNameToGA() {
  *     @param {string} [options.itemClass='panel'] - Class name of each item element
  *     @param {string} [options.itemTag='div'] - Node type of each item element
  *     @param {string} [options.data] - Set first item when items are created using custom event and public APIs
- *     @param {boolean} [options.usageStatistics=true] Send the host name to google analytics.
- *         If you do not want to send the host name, this option set to false.
+ *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+ *         If you do not want to send the hostname, this option set to false.
  * @example
  * var Flicking = tui.Flicking; // or require('tui-flicking');
  * var instance = new Flicking({
