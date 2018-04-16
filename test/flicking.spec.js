@@ -1,5 +1,7 @@
 'use strict';
 
+var snippet = require('tui-code-snippet');
+
 var Flicking = require('../src/js/flicking');
 
 describe('flicking flow test', function() {
@@ -44,6 +46,31 @@ describe('flicking flow test', function() {
             flick.setNext('data2');
             expect($(flick.wrapper).find('.panel').length).toBe(6);
             expect($(flick.wrapper).find('.panel').last().text()).toBe('data2');
+        });
+    });
+
+    describe('Using "usageStatistics" option', function() {
+        beforeEach(function() {
+            spyOn(snippet, 'imagePing');
+        });
+
+        it('when the value set to true by default, the host name is send to server.', function() {
+            flick = new Flicking({
+                element: document.getElementById('flick1'),
+                wrapper: document.getElementById('flick-wrap2')
+            });
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('when the value set to false, the host name is not send to server.', function() {
+            flick = new Flicking({
+                element: document.getElementById('flick1'),
+                wrapper: document.getElementById('flick-wrap2'),
+                usageStatistics: false
+            });
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
         });
     });
 });
