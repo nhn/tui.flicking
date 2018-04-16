@@ -12,6 +12,7 @@ var Flicking;
 
 /**
  * Send information to google analytics
+ * @ignore
  */
 function sendHostNameToGA() {
     var hostname = location.hostname;
