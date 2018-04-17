@@ -1,6 +1,6 @@
 /*!
  * tui-flicking.js
- * @version 2.0.0
+ * @version 2.1.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -70,6 +70,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	var GestureReader = __webpack_require__(1);
 	var animation = __webpack_require__(2);
 	var snippet = __webpack_require__(3);
+	var Flicking;
+
+	/**
+	 * Send information to google analytics
+	 * @ignore
+	 */
+	function sendHostNameToGA() {
+	    var hostname = location.hostname;
+
+	    snippet.imagePing('https://www.google-analytics.com/collect', {
+	        v: 1,
+	        t: 'event',
+	        tid: 'UA-115377265-9',
+	        cid: hostname,
+	        dp: hostname,
+	        dh: 'flicking'
+	    });
+	}
 
 	/**
 	 * @class Flicking
@@ -85,6 +103,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {string} [options.itemClass='panel'] - Class name of each item element
 	 *     @param {string} [options.itemTag='div'] - Node type of each item element
 	 *     @param {string} [options.data] - Set first item when items are created using custom event and public APIs
+	 *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+	 *         If you do not want to send the hostname, this option set to false.
 	 * @example
 	 * var Flicking = tui.Flicking; // or require('tui-flicking');
 	 * var instance = new Flicking({
@@ -102,7 +122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * });
 	 *
 	 */
-	var Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
+	Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
 	    /**
 	     * Whether magnetic use or not
 	     * @type {boolean}
@@ -174,6 +194,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    duration: 100,
 
+	    /**
+	     * Whether to use the usage statistics or not
+	     * @type {boolean}
+	     * @private
+	     */
+	    usageStatistics: true,
+
 	    /* eslint-disable complexity */
 	    init: function(options) {
 	        // options
@@ -189,6 +216,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.effect = options.effect || this.effect;
 	        this.flickRange = options.flickRange || this.flickRange;
 	        this.duration = options.duration || this.duration;
+	        this.usageStatistics = snippet.isExisty(options.usageStatistics) ?
+	            options.usageStatistics : this.usageStatistics;
 
 	        // to figure position to move
 	        this.startPos = {};
@@ -206,6 +235,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._initElements();
 	        this._initWrap();
 	        this._attachEvent();
+
+	        if (this.usageStatistics) {
+	            sendHostNameToGA();
+	        }
 	    },
 	    /* eslint-enable complexity */
 
