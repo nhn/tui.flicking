@@ -1,6 +1,6 @@
 {
   "name": "tui-flicking",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "dist/tui-flicking",
   "scripts": {
     "test": "karma start --no-single-run",
@@ -51,8 +51,8 @@
     "webpack-dev-server": "^1.11.0"
   },
   "dependencies": {
-    "tui-code-snippet": "^1.2.5",
-    "tui-animation": "^1.0.0",
-    "tui-gesture-reader": "^2.0.0"
+    "tui-code-snippet": "^1.3.0",
+    "tui-animation": "^1.1.0",
+    "tui-gesture-reader": "^2.1.0"
   }
 }
