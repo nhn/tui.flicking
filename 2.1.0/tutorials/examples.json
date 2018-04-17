@@ -1,0 +1,11 @@
+{
+    "example01-basic": {
+        "title": "1. Basic"
+    },
+    "example02-non-circular": {
+        "title": "2. Non-circular"
+    },
+    "example03-custom-event": {
+        "title": "3. Using custom events"
+    }
+}
