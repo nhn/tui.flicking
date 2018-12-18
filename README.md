@@ -140,7 +140,7 @@ var Flicking = require('tui-flicking'); /* CommonJS */
 ```
 
 ``` javascript
-import {Flicking} from 'tui-flicking'; /* ES6 */
+import Flicking from 'tui-flicking'; /* ES6 */
 ```
 
 You can create an instance with [options](https://nhnent.github.io/tui.flicking/latest/Flicking.html) and call various APIs after creating an instance.
