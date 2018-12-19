@@ -9,7 +9,7 @@
 
 
 ## 🚩 Table of Contents
-* [Browser Support](#-browser-support)
+* [Collect statistics on the use of open source](#Collect-statistics-on-the-use-of-open-source)
 * [Features](#-features)
 * [Examples](#-examples)
 * [Install](#-install)
@@ -27,6 +27,30 @@
 * [Contributing](#-contributing)
 * [Dependency](#-dependency)
 * [License](#-license)
+
+
+## Collect statistics on the use of open source
+
+TOAST UI Flicking applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI Flicking is used throughout the world.
+It also serves as important index to determine the future course of projects.
+`location.hostname` (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage.
+
+To disable GA, use the following `usageStatistics` option when creating the instance.
+
+```js
+var options = {
+    ...
+    usageStatistics: false
+}
+
+var instance = new Flicking(options);
+```
+
+Or, include [`tui-code-snippet`](https://github.com/nhnent/tui.code-snippet)(**v1.5.0** or **later**) and then immediately write the options as follows:
+
+```js
+tui.usageStatistics = false;
+```
 
 
 ## 🎨 Features
@@ -116,7 +140,7 @@ var Flicking = require('tui-flicking'); /* CommonJS */
 ```
 
 ``` javascript
-import {Flicking} from 'tui-flicking'; /* ES6 */
+import Flicking from 'tui-flicking'; /* ES6 */
 ```
 
 You can create an instance with [options](https://nhnent.github.io/tui.flicking/latest/Flicking.html) and call various APIs after creating an instance.
@@ -191,9 +215,9 @@ You can also see the older versions of API page on the [releases page](https://g
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.3.0
-* [tui-animation](https://github.com/nhnent/tui.animation) >=1.1.0
-* [tui-gesture-reader](https://github.com/nhnent/tui.gesture-reader) >=2.1.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.5.0
+* [tui-animation](https://github.com/nhnent/tui.animation) >=1.1.1
+* [tui-gesture-reader](https://github.com/nhnent/tui.gesture-reader) >=2.1.1
 
 
 ## 📜 License
