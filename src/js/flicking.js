@@ -11,23 +11,6 @@ var snippet = require('tui-code-snippet');
 var Flicking;
 
 /**
- * Send information to google analytics
- * @ignore
- */
-function sendHostNameToGA() {
-    var hostname = location.hostname;
-
-    snippet.imagePing('https://www.google-analytics.com/collect', {
-        v: 1,
-        t: 'event',
-        tid: 'UA-115377265-9',
-        cid: hostname,
-        dp: hostname,
-        dh: 'flicking'
-    });
-}
-
-/**
  * @class Flicking
  * @param {obejct} options
  *     @param {HTMLElement} options.element - Container element
@@ -175,7 +158,7 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
         this._attachEvent();
 
         if (this.usageStatistics) {
-            sendHostNameToGA();
+            snippet.sendHostname('flicking', 'UA-129987462-1');
         }
     },
     /* eslint-enable complexity */
