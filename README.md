@@ -215,9 +215,9 @@ You can also see the older versions of API page on the [releases page](https://g
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.3.0
-* [tui-animation](https://github.com/nhnent/tui.animation) >=1.1.0
-* [tui-gesture-reader](https://github.com/nhnent/tui.gesture-reader) >=2.1.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.5.0
+* [tui-animation](https://github.com/nhnent/tui.animation) >=1.1.1
+* [tui-gesture-reader](https://github.com/nhnent/tui.gesture-reader) >=2.1.1
 
 
 ## 📜 License
