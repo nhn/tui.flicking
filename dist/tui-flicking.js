@@ -1,6 +1,6 @@
 /*!
  * tui-flicking.js
- * @version 2.1.0
+ * @version 2.1.1
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -71,23 +71,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var animation = __webpack_require__(2);
 	var snippet = __webpack_require__(3);
 	var Flicking;
-
-	/**
-	 * Send information to google analytics
-	 * @ignore
-	 */
-	function sendHostNameToGA() {
-	    var hostname = location.hostname;
-
-	    snippet.imagePing('https://www.google-analytics.com/collect', {
-	        v: 1,
-	        t: 'event',
-	        tid: 'UA-115377265-9',
-	        cid: hostname,
-	        dp: hostname,
-	        dh: 'flicking'
-	    });
-	}
 
 	/**
 	 * @class Flicking
@@ -237,7 +220,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._attachEvent();
 
 	        if (this.usageStatistics) {
-	            sendHostNameToGA();
+	            snippet.sendHostname('flicking', 'UA-129987462-1');
 	        }
 	    },
 	    /* eslint-enable complexity */
