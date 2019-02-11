@@ -60,7 +60,7 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic.html) : Example of using default options.
+* [Basic](https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic) : Example of using default options.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 
@@ -122,7 +122,7 @@ tui.flicking/
 ### HTML
 
 Add the container element to create the component as an option.
-See [here](https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic.html#) for information about the added element.
+See [here](https://nhnent.github.io/tui.flicking/latest/tutorial-example01-basic) for information about the added element.
 
 ### JavaScript
 
@@ -143,7 +143,7 @@ var Flicking = require('tui-flicking'); /* CommonJS */
 import Flicking from 'tui-flicking'; /* ES6 */
 ```
 
-You can create an instance with [options](https://nhnent.github.io/tui.flicking/latest/Flicking.html) and call various APIs after creating an instance.
+You can create an instance with [options](https://nhnent.github.io/tui.flicking/latest/Flicking) and call various APIs after creating an instance.
 
 ``` javascript
 var instance = new Flicking({ ... });
@@ -151,7 +151,7 @@ var instance = new Flicking({ ... });
 instance.setNext();
 ```
 
-For more information about the API, please see [here](https://nhnent.github.io/tui.flicking/latest/Flicking.html).
+For more information about the API, please see [here](https://nhnent.github.io/tui.flicking/latest/Flicking).
 
 
 ## 🔧 Pull Request Steps
