@@ -604,11 +604,11 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
         if (customFire) {
             /**
              * @event Flicking#afterFlick
-             * @param {object} ev
-             *     @param {number} ev.dest - Destination value
-             *     @param {number} ev.dist - Distance value
-             *     @param {string} ev.way - "backward", "forward"
-             *     @param {boolean} ev.cover - Cover state
+             * @type {object} ev
+             * @property {number} dest - Destination value
+             * @property {number} dist - Distance value
+             * @property {string} way - "backward", "forward"
+             * @property {boolean} cover - Cover state
              * @example
              * instance.on('afterFlick', function(ev) {
              *     console.log(ev.way);
@@ -618,12 +618,12 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
         } else {
             /**
              * @event Flicking#returnFlick
-             * @param {object} ev
-             *     @param {number} ev.dest - Destination value
-             *     @param {number} ev.dist - Distance value
-             *     @param {string} ev.way - "backward", "forward"
-             *     @param {boolean} ev.cover - Cover state
-             *     @param {boolean} ev.recover - Recover state
+             * @type {object} ev
+             * @property {number} dest - Destination value
+             * @property {number} dist - Distance value
+             * @property {string} way - "backward", "forward"
+             * @property {boolean} cover - Cover state
+             * @property {boolean} recover - Recover state
              * @example
              * instance.on('returnFlick', function(ev) {
              *     console.log(ev.way);
