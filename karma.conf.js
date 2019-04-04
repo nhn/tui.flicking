@@ -1,6 +1,6 @@
 /**
  * Config file for testing
- * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';
@@ -67,8 +67,8 @@ function setConfig(defaultConfig, server) {
         defaultConfig.browsers = [
             'IE9',
             'IE10',
-            'IE11',
-            'Edge',
+            // 'IE11',
+            // 'Edge',
             'Chrome-WebDriver',
             'Firefox-WebDriver'
             // 'Safari-WebDriver' // active only when safari test is needed

@@ -1,6 +1,6 @@
 /**
  * @fileoverview The flicking component that support swipe user interaction on web browser.
- * @author NHN Ent. FE dev team <dl_javascript@nhnent.com>
+ * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 'use strict';
