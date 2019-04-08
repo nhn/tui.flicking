@@ -69,8 +69,8 @@ function setConfig(defaultConfig, server) {
             'IE10',
             // 'IE11',
             // 'Edge',
-            'Chrome-WebDriver',
-            'Firefox-WebDriver'
+            'Chrome-WebDriver'
+            // 'Firefox-WebDriver'
             // 'Safari-WebDriver' // active only when safari test is needed
         ];
         defaultConfig.reporters.push('coverage');
