@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <title>2. Non-circular</title>
+        <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+        <link rel="stylesheet" href="css/example.css" />
+    </head>
+
+    <body>
+        <div class="code-description">
+          Run on a mobile device to use touch events
+        </div>
+        <div class="code-html">
+
+            <h3>Horizontal flicking</h3>
+
+            <div id="horizontal-flick" class="flick">
+                <div id="horizontal-flick-panels" class="flick-panels">
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#4b96e6;">panel 1</strong>
+                    </div>
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#00beaa;">panel 2</strong>
+                    </div>
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#fa3282;">panel 3</strong>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Vertical flicking</h3>
+
+            <div id="vertical-flick" class="flick">
+                <div id="vertical-flick-panels" class="flick-panels">
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#4b96e6;">panel 1</strong>
+                    </div>
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#00beaa;">panel 2</strong>
+                    </div>
+                    <div class="panel">
+                        <strong class="contents" style="background-color:#fa3282;">panel 3</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui-animation/v1.1.1/tui-animation.min.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui-gesture-reader/v2.1.1/tui-gesture-reader.min.js"></script>
+        <script type="text/javascript" src="../dist/tui-flicking.js"></script>
+        <script type="text/javascript" class="code-js">
+
+            var horizontalFlicking = new tui.Flicking({
+                element: document.getElementById('horizontal-flick'),
+                wrapper: document.getElementById('horizontal-flick-panels'),
+                flow: 'horizontal',
+                circular: false
+            });
+
+            var verticalFlicking = new tui.Flicking({
+                element: document.getElementById('vertical-flick'),
+                wrapper: document.getElementById('vertical-flick-panels'),
+                flow: 'vertical',
+                circular: false
+            });
+
+        </script>
+    </body>
+</html>
