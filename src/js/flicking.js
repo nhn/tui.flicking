@@ -18,7 +18,7 @@ var Flicking;
  *     @param {string} [options.flow] - Type of flicking ('horizontal'|'vertical')
  *     @param {boolean} [options.circular] - Whether use circular flicking or not
  *     @param {boolean} [options.useMagnetic] - Whether magnetic use or not
- *     @param {string} [options.effect] - Type of [animation]{@link https://github.com/nhnent/tui.animation}
+ *     @param {string} [options.effect] - Type of [animation]{@link https://github.com/nhn/tui.animation}
  *     @param {number} [options.flickRange] - Minimum range of flicking
  *     @param {number} [options.duration] - Duration for animation
  *     @param {string} [options.itemClass='panel'] - Class name of each item element
