@@ -1,6 +1,6 @@
 /*!
  * tui-flicking.js
- * @version 2.1.3
+ * @version 2.1.4
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     @param {string} [options.flow] - Type of flicking ('horizontal'|'vertical')
 	 *     @param {boolean} [options.circular] - Whether use circular flicking or not
 	 *     @param {boolean} [options.useMagnetic] - Whether magnetic use or not
-	 *     @param {string} [options.effect] - Type of [animation]{@link https://github.com/nhnent/tui.animation}
+	 *     @param {string} [options.effect] - Type of [animation]{@link https://github.com/nhn/tui.animation}
 	 *     @param {number} [options.flickRange] - Minimum range of flicking
 	 *     @param {number} [options.duration] - Duration for animation
 	 *     @param {string} [options.itemClass='panel'] - Class name of each item element
@@ -213,8 +213,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._makeItems(options.data || '');
 	        }
 
-	        // init helper for MoveAnimator, movedetector
-	        this._initHelpers();
+	        // init helper for MoveAnimator, moveDetector
+	        this._initHelpers(options.usageStatistics);
 	        this._initElements();
 	        this._initWrap();
 	        this._attachEvent();
@@ -253,13 +253,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Initialize method for helper objects
+	     * @param {boolean} usageStatistics - Send the hostname to google analytics.
+	     *         If you do not want to send the hostname, this option set to false.
 	     * @private
 	     */
-	    _initHelpers: function() {
+	    _initHelpers: function(usageStatistics) {
 	        // MoveDetector component
 	        this.movedetect = new GestureReader({
 	            flickRange: this.flickRange,
-	            type: 'flick'
+	            type: 'flick',
+	            usageStatistics: usageStatistics
 	        });
 	    },
 
@@ -646,7 +649,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                originValue = (horizontal ? left : top) - start;
 	                self.wrapper.style[config.way] = (originValue * direction) + start + 'px';
 	            },
-	            complete: snippet.bind(this._complete, this, pos, pos.cover)
+	            complete: snippet.bind(this._complete, this, pos, pos.cover),
+	            usageStatistics: this.usageStatistics
 	        });
 
 	        this.mover.run();
