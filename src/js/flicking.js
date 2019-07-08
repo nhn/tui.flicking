@@ -151,8 +151,8 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
             this._makeItems(options.data || '');
         }
 
-        // init helper for MoveAnimator, movedetector
-        this._initHelpers();
+        // init helper for MoveAnimator, moveDetector
+        this._initHelpers(options.usageStatistics);
         this._initElements();
         this._initWrap();
         this._attachEvent();
@@ -191,13 +191,16 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
 
     /**
      * Initialize method for helper objects
+     * @param {boolean} usageStatistics - Send the hostname to google analytics.
+     *         If you do not want to send the hostname, this option set to false.
      * @private
      */
-    _initHelpers: function() {
+    _initHelpers: function(usageStatistics) {
         // MoveDetector component
         this.movedetect = new GestureReader({
             flickRange: this.flickRange,
-            type: 'flick'
+            type: 'flick',
+            usageStatistics: usageStatistics
         });
     },
 
@@ -584,7 +587,8 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
                 originValue = (horizontal ? left : top) - start;
                 self.wrapper.style[config.way] = (originValue * direction) + start + 'px';
             },
-            complete: snippet.bind(this._complete, this, pos, pos.cover)
+            complete: snippet.bind(this._complete, this, pos, pos.cover),
+            usageStatistics: this.usageStatistics
         });
 
         this.mover.run();
