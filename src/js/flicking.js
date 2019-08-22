@@ -152,7 +152,7 @@ Flicking = snippet.defineClass(/** @lends Flicking.prototype */{
         }
 
         // init helper for MoveAnimator, moveDetector
-        this._initHelpers(options.usageStatistics);
+        this._initHelpers(this.usageStatistics);
         this._initElements();
         this._initWrap();
         this._attachEvent();
