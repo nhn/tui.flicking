@@ -1,6 +1,6 @@
 /*!
  * tui-flicking.js
- * @version 2.1.4
+ * @version 2.1.5
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -214,7 +214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        // init helper for MoveAnimator, moveDetector
-	        this._initHelpers(options.usageStatistics);
+	        this._initHelpers(this.usageStatistics);
 	        this._initElements();
 	        this._initWrap();
 	        this._attachEvent();
