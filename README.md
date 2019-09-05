@@ -1,3 +1,5 @@
+#### ‼️ There are no major updates planned for `tui.flicking` in the future. It will only get bug fixes.
+
 # TOAST UI Component : Flicking
 > Component that supports flicking effect on mobile touch events.
 
